@@ -50,9 +50,6 @@
     .blur-overlay {
       position: fixed;
       inset: 0;
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      background: rgba(0, 0, 0, 0.4);
       z-index: 10;
       display: flex;
       align-items: center;
@@ -66,6 +63,20 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+    }
+
+    /* Movimiento sutil del botón */
+    @keyframes pulse-float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .pulse-btn {
+      animation: pulse-float 3s ease-in-out infinite;
     }
 
     /* Indicador de carga */
@@ -226,6 +237,34 @@
       text-align: center;
       font-weight: 700;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      letter-spacing: 0.5px;
+    }
+
+    .services-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 60px;
+      text-align: center;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      letter-spacing: 0.5px;
     }
 
     .products-grid {
@@ -243,17 +282,17 @@
       border-radius: 20px;
       padding: 40px 30px;
       text-align: center;
-      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       cursor: pointer;
       position: relative;
       overflow: hidden;
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(30px) translateZ(0);
     }
 
     .product-card.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) translateZ(0);
     }
 
     .product-card::before {
@@ -268,7 +307,7 @@
     .product-card:hover {
       background: rgba(255, 255, 255, 0.08);
       border-color: rgba(0, 180, 255, 0.25);
-      transform: translateY(-10px) scale(1.02);
+      transform: translateY(-10px) scale(1.02) translateZ(0);
       box-shadow: 0 25px 50px rgba(0, 100, 200, 0.12);
     }
 
@@ -344,24 +383,26 @@
 
     .service-item {
       background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 16px;
       padding: 32px;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(20px) scale(0.95) translateZ(0);
     }
 
     .service-item.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1) translateZ(0);
     }
 
     .service-item:hover {
-      background: rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.08);
       border-color: rgba(0, 180, 255, 0.2);
-      transform: translateX(6px);
-      box-shadow: 0 10px 30px rgba(0, 100, 200, 0.08);
+      transform: translateY(-8px) translateX(6px) scale(1.02) translateZ(0);
+      box-shadow: 0 15px 40px rgba(0, 100, 200, 0.12);
     }
 
     .service-item h3 {
@@ -385,6 +426,236 @@
       border-top: 1px solid rgba(255, 255, 255, 0.04);
     }
 
+    /* ===== SECCION CONTACTO ===== */
+    .contact-section {
+      padding: 100px 40px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(0, 150, 255, 0.05) 0%, rgba(0, 100, 200, 0.03) 100%);
+      border-radius: 24px;
+      margin-bottom: 40px;
+      border: 1px solid rgba(0, 180, 255, 0.1);
+    }
+
+    .contact-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 30%, #7ec8ff 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .contact-message {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 40px;
+      line-height: 1.8;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 40px;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 2px solid;
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .contact-btn span {
+      font-size: 1.3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .whatsapp-btn {
+      background: rgba(37, 211, 102, 0.15);
+      color: #25d366;
+      border-color: rgba(37, 211, 102, 0.4);
+      box-shadow: 0 0 20px rgba(37, 211, 102, 0.1);
+    }
+
+    .whatsapp-btn:hover {
+      background: rgba(37, 211, 102, 0.25);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 35px rgba(37, 211, 102, 0.2);
+      border-color: rgba(37, 211, 102, 0.6);
+    }
+
+    .whatsapp-btn:hover::before {
+      opacity: 1;
+    }
+
+    .email-btn {
+      background: rgba(100, 180, 255, 0.15);
+      color: #7ec8ff;
+      border-color: rgba(100, 180, 255, 0.4);
+      box-shadow: 0 0 20px rgba(100, 180, 255, 0.1);
+    }
+
+    .email-btn:hover {
+      background: rgba(100, 180, 255, 0.25);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 35px rgba(100, 180, 255, 0.2);
+      border-color: rgba(100, 180, 255, 0.6);
+    }
+
+    .email-btn:hover::before {
+      opacity: 1;
+    }
+
+    .contact-tagline {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-style: italic;
+      margin-top: 10px;
+    }
+
+    /* ===== SECCION OFERTAS/PRODUCTOS ===== */
+    .offerings-section {
+      padding: 100px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .offerings-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 60px;
+      text-align: center;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      letter-spacing: 0.5px;
+    }
+
+    .offerings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-bottom: 80px;
+    }
+
+    .offering-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px) rotateX(15deg) translateZ(0);
+    }
+
+    .offering-card.visible {
+      opacity: 1;
+      transform: translateY(0) rotateX(0) translateZ(0);
+    }
+
+    .offering-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 180, 255, 0.12) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .offering-card:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(0, 200, 255, 0.3);
+      transform: translateY(-12px) scale(1.03) translateZ(0);
+      box-shadow: 0 30px 60px rgba(0, 150, 255, 0.15);
+    }
+
+    .offering-card:hover::before {
+      opacity: 1;
+    }
+
+    .offering-icon {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      opacity: 0.95;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.4s ease;
+    }
+
+    .offering-card:hover .offering-icon {
+      transform: scale(1.15) rotate(-5deg);
+    }
+
+    .offering-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+
+    .offering-card p {
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 20px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .offering-link {
+      color: rgba(126, 200, 255, 0.8);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+      transition: color 0.3s ease;
+    }
+
+    .offering-link:hover {
+      color: #7ec8ff;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       .hero-section {
@@ -400,12 +671,16 @@
       }
 
       .products-section,
-      .services-section {
+      .services-section,
+      .offerings-section,
+      .contact-section {
         padding: 60px 20px;
       }
 
       .products-section h2,
-      .services-section h2 {
+      .services-section h2,
+      .offerings-section h2,
+      .contact-section h2 {
         font-size: 2rem;
       }
 
@@ -426,18 +701,24 @@
 </head>
 <body>
 
-  <!-- Imagen estatica del ultimo frame (capa de respaldo) -->
-  <img id="staticBg" src="images/final-frame.jpg" alt="">
+  <!-- Imagen estatica del ultimo frame (capa fija) -->
+  <img id="staticBg" src="https://www.image2url.com/r2/default/images/1776531563137-97f8423c-bb2c-4b2c-8b63-4aa2a712cd3e.png" alt="" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 3; opacity: 0; pointer-events: none;">
 
-  <!-- Video de fondo -->
-  <video id="videoBg" preload="auto" muted playsinline disablePictureInPicture>
+  <!-- Video de fondo - sin espacio ocupado -->
+  <video id="videoBg" preload="auto" muted playsinline disablePictureInPicture style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; opacity: 0; pointer-events: none;">
     <source src="video/intro.webm" type="video/webm">
     <source src="video/intro.mp4" type="video/mp4">
   </video>
 
-  <!-- Overlay inicial con blur -->
+  <!-- Fondo imagen inicial Full HD - VISIBLE DESDE INICIO -->
+  <img id="initBg" src="https://www.image2url.com/r2/default/images/1776506071031-a6408ea8-68c2-40ae-b7be-773bb71eab75.jpg" alt="background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
+
+  <!-- Overlay sutil - solo contraste -->
+  <div id="overlayContrast" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.25); z-index: 1;"></div>
+
+  <!-- Overlay inicial - solo botón enfocado -->
   <div class="blur-overlay" id="blurOverlay">
-    <button class="glass-btn" id="enterBtn" disabled>
+    <button class="glass-btn pulse-btn" id="enterBtn" disabled>
       Te estabamos esperando... adelante
     </button>
     <div class="loader" id="loader"></div>
@@ -506,6 +787,50 @@
       </div>
     </section>
 
+    <section class="offerings-section" id="ofertas">
+      <h2>Nuestros Productos</h2>
+      <div class="offerings-grid">
+        <div class="offering-card">
+          <div class="offering-icon">🚀</div>
+          <h3>Soluciones Cloud</h3>
+          <p>Infraestructura escalable y segura en la nube para empresas de cualquier tamaño</p>
+          <a href="#" class="offering-link">Explorar &rarr;</a>
+        </div>
+        <div class="offering-card">
+          <div class="offering-icon">📱</div>
+          <h3>Apps Móviles</h3>
+          <p>Aplicaciones nativas y multiplataforma con interfaz intuitiva y rendimiento óptimo</p>
+          <a href="#" class="offering-link">Explorar &rarr;</a>
+        </div>
+        <div class="offering-card">
+          <div class="offering-icon">🤖</div>
+          <h3>Automatización IA</h3>
+          <p>Soluciones inteligentes que automatizan procesos y mejoran la eficiencia operativa</p>
+          <a href="#" class="offering-link">Explorar &rarr;</a>
+        </div>
+        <div class="offering-card">
+          <div class="offering-icon">💼</div>
+          <h3>Gestión Empresarial</h3>
+          <p>Plataformas integrales para control total de tus operaciones y datos críticos</p>
+          <a href="#" class="offering-link">Explorar &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section" id="contacto">
+      <h2>Contacta Con Nosotros</h2>
+      <p class="contact-message">Descubre cómo MANALF puede transformar tu visión en realidad. Lo mejor aún no se ha dado a conocer, y nosotros te acercamos a ello.</p>
+      <div class="contact-buttons">
+        <a href="https://wa.link/giwkbo" target="_blank" class="contact-btn whatsapp-btn">
+          <span>💬</span> WhatsApp
+        </a>
+        <a href="mailto:manalfnfc@gmail.com" class="contact-btn email-btn">
+          <span>✉️</span> Email
+        </a>
+      </div>
+      <p class="contact-tagline">Estamos listos para llevar tu negocio al siguiente nivel</p>
+    </section>
+
     <footer class="footer">
       <p>&copy; 2024 MANALF. Todos los derechos reservados.</p>
     </footer>
@@ -554,6 +879,10 @@
       if (videoStarted) return;
       videoStarted = true;
 
+      // Audio: inicio del sistema
+      const audioStart = new Audio('data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==');
+      audioStart.play().catch(() => {});
+
       // 1. Muestra el video
       videoBg.style.opacity = '1';
 
@@ -583,6 +912,10 @@
     });
 
     function onVideoEnded() {
+      // Audio: sistema iniciado
+      const audioEnd = new Audio('data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==');
+      audioEnd.play().catch(() => {});
+
       // Crossfade: video -> imagen estatica
       staticBg.style.opacity = '1';
       videoBg.style.transition = 'opacity 1.5s ease';
@@ -616,7 +949,7 @@
         });
       }, { threshold: 0.1 });
 
-      document.querySelectorAll('.product-card, .service-item').forEach(el => {
+      document.querySelectorAll('.product-card, .service-item, .offering-card').forEach(el => {
         observer.observe(el);
       });
     }
