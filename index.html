@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MANALF - Soluciones Tecnológicas</title>
+  <title>MANALF - Soluciones Tecnologicas</title>
   <style>
     * {
       margin: 0;
@@ -19,6 +19,8 @@
     }
 
     /* ===== CAPAS DE FONDO ===== */
+
+    /* Imagen estatica del ultimo frame (siempre presente, se revela con fade) */
     #staticBg {
       position: fixed;
       top: 0;
@@ -31,6 +33,7 @@
       transition: opacity 1s ease;
     }
 
+    /* Video de fondo */
     #videoBg {
       position: fixed;
       top: 0;
@@ -47,9 +50,6 @@
     .blur-overlay {
       position: fixed;
       inset: 0;
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      background: rgba(0, 0, 0, 0.4);
       z-index: 10;
       display: flex;
       align-items: center;
@@ -65,6 +65,27 @@
       pointer-events: none;
     }
 
+    /* Movimiento sutil del botón - solo en desktop */
+    @keyframes pulse-float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-3px);
+      }
+    }
+
+    .pulse-btn {
+      animation: pulse-float 4s ease-in-out infinite;
+    }
+
+    @media (max-width: 768px) {
+      .pulse-btn {
+        animation: none;
+      }
+    }
+
+    /* Indicador de carga */
     .loader {
       width: 24px;
       height: 24px;
@@ -155,47 +176,9 @@
       visibility: visible;
     }
 
-    /* ===== NAVEGACION ===== */
-    nav {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      background: rgba(10, 10, 18, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 50px;
-      padding: 12px 32px;
-      display: flex;
-      gap: 32px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-      opacity: 0;
-      transition: opacity 1s ease 1s;
-    }
-
-    nav.visible {
-      opacity: 1;
-    }
-
-    nav a {
-      color: rgba(255, 255, 255, 0.7);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      letter-spacing: 0.5px;
-    }
-
-    nav a:hover {
-      color: #ffffff;
-      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-    }
-
     /* ===== SECCIONES ===== */
     .hero-section {
-      padding: 120px 40px;
+      padding: 80px 40px;
       text-align: center;
       min-height: 100vh;
       display: flex;
@@ -206,32 +189,94 @@
     }
 
     .hero-section h1 {
-      font-size: clamp(60px, 9vw, 120px);
+      font-size: 4rem;
       font-weight: 800;
       margin-bottom: 20px;
-      letter-spacing: 6px;
-      text-transform: uppercase;
+      letter-spacing: -2px;
       text-shadow: 0 4px 20px rgba(0, 150, 255, 0.25), 0 2px 8px rgba(0, 0, 0, 0.5);
       background: linear-gradient(135deg, #fff 30%, #7ec8ff 70%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: shimmer 8s ease-in-out infinite;
-      background-size: 200% auto;
-    }
-
-    @keyframes shimmer {
-      0%, 100% { background-position: 0% center; }
-      50% { background-position: 100% center; }
+      filter: drop-shadow(0 2px 4px rgba(126, 200, 255, 0.3));
     }
 
     .hero-section p {
-      font-size: clamp(16px, 2vw, 20px);
+      font-size: 1.25rem;
       color: rgba(255, 255, 255, 0.8);
-      max-width: 700px;
+      max-width: 600px;
       line-height: 1.7;
       margin-bottom: 40px;
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 24px;
+    }
+
+    .product-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+
+    .product-card p {
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 20px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px;
+      border-radius: 16px;
+    }
+
+    .service-item h3 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    .service-item p {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 12px;
+      border-radius: 14px;
+    }
+
+    .offering-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+
+    .offering-card p {
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 20px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px;
+      border-radius: 16px;
     }
 
     .hero-cta {
@@ -256,75 +301,77 @@
       box-shadow: 0 8px 30px rgba(0, 150, 255, 0.2);
     }
 
-    /* ===== SECCIONES GENERALES ===== */
-    section {
+    .products-section {
       padding: 100px 40px;
       max-width: 1200px;
       margin: 0 auto;
-      position: relative;
     }
 
-    section h2 {
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 700;
+    .products-section h2 {
+      font-size: 2.8rem;
       margin-bottom: 60px;
       text-align: center;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #ffffff 0%, #7ec8ff 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: none;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      letter-spacing: 0.5px;
     }
 
-    .section-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      margin: 0 auto;
-      max-width: 800px;
+    .services-section h2 {
+      font-size: 2.8rem;
+      margin-bottom: 60px;
+      text-align: center;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      letter-spacing: 0.5px;
     }
 
-    /* ===== PRODUCTOS SAAS ===== */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
+      gap: 30px;
       margin-bottom: 80px;
     }
 
     .product-card {
-      background: rgba(20, 20, 30, 0.6);
+      background: rgba(255, 255, 255, 0.04);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 20px;
-      padding: 40px 32px;
+      padding: 40px 30px;
       text-align: center;
-      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       cursor: pointer;
       position: relative;
       overflow: hidden;
       opacity: 0;
-      transform: translateY(30px);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transform: translateY(30px) translateZ(0);
     }
 
     .product-card.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) translateZ(0);
     }
 
     .product-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    }
-
-    .product-card::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -334,13 +381,13 @@
     }
 
     .product-card:hover {
-      background: rgba(30, 30, 45, 0.7);
+      background: rgba(255, 255, 255, 0.08);
       border-color: rgba(0, 180, 255, 0.25);
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 25px 50px rgba(0, 100, 200, 0.15);
+      transform: translateY(-10px) scale(1.02) translateZ(0);
+      box-shadow: 0 25px 50px rgba(0, 100, 200, 0.12);
     }
 
-    .product-card:hover::after {
+    .product-card:hover::before {
       opacity: 1;
     }
 
@@ -350,7 +397,6 @@
       opacity: 0.9;
       position: relative;
       z-index: 1;
-      filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
     }
 
     .product-card h3 {
@@ -359,11 +405,10 @@
       font-weight: 600;
       position: relative;
       z-index: 1;
-      color: #ffffff;
     }
 
     .product-card p {
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(255, 255, 255, 0.65);
       font-size: 0.95rem;
       line-height: 1.7;
       margin-bottom: 25px;
@@ -390,291 +435,353 @@
       background: rgba(0, 150, 255, 0.25);
       transform: scale(1.05);
       box-shadow: 0 4px 20px rgba(0, 150, 255, 0.15);
-      color: #ffffff;
     }
 
-    /* ===== SERVICIOS ===== */
+    .services-section {
+      padding: 100px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .services-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 60px;
+      text-align: center;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
     }
 
     .service-item {
-      background: rgba(20, 20, 30, 0.5);
+      background: rgba(255, 255, 255, 0.03);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 16px;
       padding: 32px;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(20px) scale(0.95) translateZ(0);
     }
 
     .service-item.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1) translateZ(0);
     }
 
     .service-item:hover {
-      background: rgba(30, 30, 45, 0.7);
+      background: rgba(255, 255, 255, 0.08);
       border-color: rgba(0, 180, 255, 0.2);
-      transform: translateX(6px);
-      box-shadow: 0 10px 30px rgba(0, 100, 200, 0.1);
+      transform: translateY(-8px) translateX(6px) scale(1.02) translateZ(0);
+      box-shadow: 0 15px 40px rgba(0, 100, 200, 0.12);
     }
 
     .service-item h3 {
       font-size: 1.25rem;
       margin-bottom: 12px;
       font-weight: 600;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .service-item h3::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      background: linear-gradient(135deg, #0096ff, #7ec8ff);
-      border-radius: 50%;
-      box-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+      color: rgba(255, 255, 255, 0.95);
     }
 
     .service-item p {
-      color: rgba(255, 255, 255, 0.65);
+      color: rgba(255, 255, 255, 0.55);
       font-size: 0.95rem;
       line-height: 1.6;
     }
 
-    /* ===== PRODUCTOS INTELIGENTES (OFERTAS) ===== */
-    .offerings-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-    }
-
-    .offering-card {
-      background: rgba(20, 20, 30, 0.6);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 40px 32px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(30px);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    .offering-card.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .offering-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    }
-
-    .offering-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(0, 180, 255, 0.3);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 150, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-
-    .offering-icon {
-      font-size: 40px;
-      margin-bottom: 20px;
-      display: block;
-      filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
-    }
-
-    .offering-card h3 {
-      color: #ffffff;
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      letter-spacing: -0.3px;
-    }
-
-    .offering-card p {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 15px;
-      line-height: 1.7;
-      margin-bottom: 24px;
-    }
-
-    .offering-link {
-      color: #7ec8ff;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .offering-link::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: #7ec8ff;
-      transition: width 0.3s ease;
-    }
-
-    .offering-link:hover {
-      color: #ffffff;
-      gap: 10px;
-    }
-
-    .offering-link:hover::after {
-      width: 100%;
-    }
-
-    /* ===== CONTACTO ===== */
-    .contact-section {
-      text-align: center;
-    }
-
-    .contact-message {
-      color: rgba(255, 255, 255, 0.85);
-      font-size: clamp(18px, 3vw, 24px);
-      line-height: 1.8;
-      margin-bottom: 48px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      font-weight: 400;
-    }
-
-    .contact-buttons {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 48px;
-    }
-
-    .contact-btn {
-      padding: 16px 32px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 15px;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(16px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .whatsapp-btn {
-      background: rgba(37, 211, 102, 0.15);
-      color: #25d366;
-      border-color: rgba(37, 211, 102, 0.3);
-    }
-
-    .whatsapp-btn:hover {
-      background: rgba(37, 211, 102, 0.25);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.2);
-      color: #4ade80;
-    }
-
-    .email-btn {
-      background: rgba(0, 150, 255, 0.15);
-      color: #7ec8ff;
-      border-color: rgba(0, 180, 255, 0.3);
-    }
-
-    .email-btn:hover {
-      background: rgba(0, 150, 255, 0.25);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0, 150, 255, 0.2);
-      color: #ffffff;
-    }
-
-    .contact-tagline {
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 14px;
-      font-style: italic;
-      line-height: 1.6;
-    }
-
-    /* ===== FOOTER ===== */
     .footer {
       text-align: center;
       padding: 60px 40px;
       color: rgba(255, 255, 255, 0.35);
       font-size: 0.9rem;
       border-top: 1px solid rgba(255, 255, 255, 0.04);
-      margin-top: 60px;
     }
 
-    /* ===== SCROLLBAR ===== */
-    ::-webkit-scrollbar {
-      width: 8px;
+    /* ===== SECCION CONTACTO ===== */
+    .contact-section {
+      padding: 100px 40px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      margin-bottom: 40px;
     }
 
-    ::-webkit-scrollbar-track {
-      background: #050508;
+    .contact-section h2 {
+      font-size: 2.8rem;
+      margin-bottom: 40px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 30%, #7ec8ff 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 4px rgba(126, 200, 255, 0.3));
     }
 
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
+    .contact-wrapper {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 28px;
+      padding: 50px 40px;
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.2);
+    .contact-message {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 40px;
+      line-height: 1.8;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 24px;
+      border-radius: 16px;
+    }
+
+    .contact-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 40px;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 2px solid;
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .contact-btn span {
+      font-size: 1.3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .whatsapp-btn {
+      background: rgba(37, 211, 102, 0.15);
+      color: #25d366;
+      border-color: rgba(37, 211, 102, 0.4);
+      box-shadow: 0 0 20px rgba(37, 211, 102, 0.1);
+    }
+
+    .whatsapp-btn:hover {
+      background: rgba(37, 211, 102, 0.25);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 35px rgba(37, 211, 102, 0.2);
+      border-color: rgba(37, 211, 102, 0.6);
+    }
+
+    .whatsapp-btn:hover::before {
+      opacity: 1;
+    }
+
+    .email-btn {
+      background: rgba(100, 180, 255, 0.15);
+      color: #7ec8ff;
+      border-color: rgba(100, 180, 255, 0.4);
+      box-shadow: 0 0 20px rgba(100, 180, 255, 0.1);
+    }
+
+    .email-btn:hover {
+      background: rgba(100, 180, 255, 0.25);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 35px rgba(100, 180, 255, 0.2);
+      border-color: rgba(100, 180, 255, 0.6);
+    }
+
+    .email-btn:hover::before {
+      opacity: 1;
+    }
+
+    .contact-tagline {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-style: italic;
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px;
+      border-radius: 12px;
+    }
+
+    /* ===== SECCION OFERTAS/PRODUCTOS ===== */
+    .offerings-section {
+      padding: 100px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .offerings-section h2 {
+      font-size: 2.8rem;
+      margin-bottom: 60px;
+      text-align: center;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      letter-spacing: 0.5px;
+    }
+
+    .offerings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-bottom: 80px;
+    }
+
+    .offering-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px) rotateX(15deg) translateZ(0);
+    }
+
+    .offering-card.visible {
+      opacity: 1;
+      transform: translateY(0) rotateX(0) translateZ(0);
+    }
+
+    .offering-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 180, 255, 0.12) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .offering-card:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(0, 200, 255, 0.3);
+      transform: translateY(-12px) scale(1.03) translateZ(0);
+      box-shadow: 0 30px 60px rgba(0, 150, 255, 0.15);
+    }
+
+    .offering-card:hover::before {
+      opacity: 1;
+    }
+
+    .offering-icon {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      opacity: 0.95;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.4s ease;
+    }
+
+    .offering-card:hover .offering-icon {
+      transform: scale(1.15) rotate(-5deg);
+    }
+
+    .offering-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+
+    .offering-card p {
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 20px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .offering-link {
+      color: rgba(126, 200, 255, 0.8);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+      transition: color 0.3s ease;
+    }
+
+    .offering-link:hover {
+      color: #7ec8ff;
     }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
-      nav {
-        gap: 16px;
-        padding: 10px 20px;
-        font-size: 13px;
-      }
-
       .hero-section {
-        padding: 80px 20px;
-      }
-
-      section {
         padding: 60px 20px;
       }
 
-      .products-grid,
-      .offerings-grid,
-      .services-grid {
-        grid-template-columns: 1fr;
+      .hero-section h1 {
+        font-size: 2.8rem;
+      }
+
+      .hero-section p {
+        font-size: 1.1rem;
+      }
+
+      .products-section,
+      .services-section,
+      .offerings-section,
+      .contact-section {
+        padding: 60px 20px;
+      }
+
+      .products-section h2,
+      .services-section h2,
+      .offerings-section h2,
+      .contact-section h2 {
+        font-size: 2rem;
       }
 
       .glass-btn {
         font-size: 15px;
         padding: 16px 40px;
-      }
-
-      .contact-buttons {
-        flex-direction: column;
-        align-items: center;
       }
     }
 
@@ -689,206 +796,237 @@
 </head>
 <body>
 
-  <!-- Imagen estatica del ultimo frame (capa de respaldo) -->
-  <img id="staticBg" src="images/final-frame.jpg" alt="">
+  <!-- Imagen estatica del ultimo frame (capa fija) -->
+  <img id="staticBg" src="https://www.image2url.com/r2/default/images/1776531563137-97f8423c-bb2c-4b2c-8b63-4aa2a712cd3e.png" alt="" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 3; opacity: 0; pointer-events: none;">
 
-  <!-- Video de fondo -->
-  <video id="videoBg" preload="auto" muted playsinline disablePictureInPicture>
+  <!-- Video de fondo - sin espacio ocupado -->
+  <video id="videoBg" preload="auto" muted playsinline disablePictureInPicture style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; opacity: 0; pointer-events: none;">
     <source src="video/intro.webm" type="video/webm">
     <source src="video/intro.mp4" type="video/mp4">
   </video>
 
-  <!-- Overlay inicial con blur -->
+  <!-- Fondo imagen inicial Full HD - VISIBLE DESDE INICIO -->
+  <img id="initBg" src="https://www.image2url.com/r2/default/images/1776506071031-a6408ea8-68c2-40ae-b7be-773bb71eab75.jpg" alt="background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
+
+  <!-- Overlay sutil - solo contraste -->
+  <div id="overlayContrast" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.25); z-index: 1;"></div>
+
+  <!-- Overlay inicial - solo botón enfocado -->
   <div class="blur-overlay" id="blurOverlay">
-    <button class="glass-btn" id="enterBtn" disabled>
-      Te estábamos esperando... adelante
+    <button class="glass-btn pulse-btn" id="enterBtn" disabled>
+      Te estabamos esperando. continua...  
     </button>
     <div class="loader" id="loader"></div>
   </div>
 
-  <!-- Contenido principal -->
-  <div class="main-content" id="mainContent">
+<!-- Contenido principal -->
+<div class="main-content" id="mainContent" style="color:#ffffff;">
 
-    <nav id="mainNav">
-      <a href="#productos">Productos</a>
-      <a href="#servicios">Servicios</a>
-      <a href="#ofertas">Ofertas</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
+  <section class="hero-section">
+    <h1 style="color:#ffffff;">MANALF</h1>
+    <p style="color:#f5f5f5;">
+    Destacamos creando Infraestructuras digitales inteligentes, diseñadas para convertir ideas en sistemas reales, automatizados y escalables.<br>
+    </p>
+    <a href="#productos" class="hero-cta" style="color:#ffffff;">Explorar ecosistemas... &rarr;</a>
+  </section>
 
-    <section class="hero-section">
-      <h1>MANALF</h1>
-      <p>Diseñamos infraestructuras digitales inteligentes que convierten ideas en sistemas reales, automatizados y escalables.<br>
-      Centraliza, controla y optimiza tu operación desde una sola estructura.</p>
-      <a href="#productos" class="hero-cta">Explorar ecosistemas &rarr;</a>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <section id="productos">
-      <h2>SAAS</h2>
-      <div class="products-grid">
-        <div class="product-card">
-          <div class="product-icon">&#128295;</div>
-          <h3>MEDUSA</h3>
-          <p>Controla quién entra, cuándo y cómo. Genera accesos únicos con códigos QR de una sola lectura, eliminando duplicidad y riesgos.<br>
-          Diseñado para eventos, espacios privados y experiencias donde el control no es opcional, es estratégico.</p>
-          <a href="#" class="product-link">Conocer más &rarr;</a>
-        </div>
-
-        <div class="product-card">
-          <div class="product-icon">&#128202;</div>
-          <h3>-</h3>
-          <p>muy pronto...</p>
-          <a href="#" class="product-link"> &rarr;</a>
-        </div>
-
-        <div class="product-card">
-          <div class="product-icon">&#128272;</div>
-          <h3>-</h3>
-          <p>muy pronto...</p>
-          <a href="#" class="product-link">------------- &rarr;</a>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <section class="services-section" id="servicios">
-      <h2>Servicios calificados</h2>
-      <div class="services-grid">
-
-        <div class="service-item">
-          <h3>Arquitectura Digital Personalizada</h3>
-          <p>Diseñamos la estructura completa de tu ecosistema digital para que cada parte cumpla una función clara dentro de tu crecimiento.</p>
-        </div>
-
-        <div class="service-item">
-          <h3>Software a Medida</h3>
-          <p>Creamos soluciones que no existen en el mercado, adaptadas exactamente a cómo funciona tu negocio, no al revés.</p>
-        </div>
-
-        <div class="service-item">
-          <h3>Implementación Inteligente</h3>
-          <p>Activamos tu sistema listo para operar desde el primer momento, sin fricciones ni procesos innecesarios.</p>
-        </div>
-
-        <div class="service-item">
-          <h3>Soporte Evolutivo</h3>
-          <p>No solo mantenemos tu sistema, lo hacemos evolucionar contigo. Cada mejora responde a datos reales y uso real.</p>
-        </div>
-
-        <div class="service-item">
-          <h3>Activación de Equipo</h3>
-          <p>Tu equipo no solo usa el sistema, aprende a dominarlo para convertirlo en una herramienta de ventaja competitiva.</p>
-        </div>
-
-        <div class="service-item">
-          <h3>Optimización Continua</h3>
-          <p>Ajustamos cada detalle para mejorar rendimiento, eficiencia y resultados sin que tengas que detener tu operación.</p>
-        </div>
-
-        <div class="service-item">
-          <h3>Automatización con IA</h3>
-          <p>Bots que entienden tu negocio, responden por ti y convierten conversaciones en oportunidades constantes.</p>
-        </div>
-
-        <div class="service-item">
-          <h3>Digitalización de Información</h3>
-          <p>Transformamos datos dispersos en estructuras organizadas, accesibles y listas para ser utilizadas estratégicamente.</p>
-        </div>
-
-        <div class="service-item">
-          <h3>Experiencia Digital</h3>
-          <p>Diseñamos interfaces que guían, conectan y generan acción sin esfuerzo, donde cada interacción tiene un propósito.</p>
-        </div>
-
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <section class="offerings-section" id="ofertas">
-      <h2>Productos Inteligentes</h2>
-      <div class="offerings-grid">
-
-        <div class="offering-card">
-          <div class="offering-icon">🚀</div>
-          <h3>Kit Emprendedor NFC</h3>
-          <p>Lleva tu identidad digital contigo. Comparte información, redes o servicios con un solo gesto.<br>
-          Una herramienta simple que genera impacto inmediato.</p>
-          <a href="#" class="offering-link">Explorar &rarr;</a>
-        </div>
-
-        <div class="offering-card">
-          <div class="offering-icon">📱</div>
-          <h3>Identidad Digital Premium</h3>
-          <p>Toda tu presencia digital organizada en un solo espacio elegante, diseñado para transmitir claridad, valor y profesionalismo.</p>
-          <a href="#" class="offering-link">Explorar &rarr;</a>
-        </div>
-
-        <div class="offering-card">
-          <div class="offering-icon">🤖</div>
-          <h3>Bots con IA</h3>
-          <p>Automatiza conversaciones sin perder personalidad. Responde, filtra y convierte sin depender de tu tiempo.</p>
-          <a href="#" class="offering-link">Explorar &rarr;</a>
-        </div>
-
-        <div class="offering-card">
-          <div class="offering-icon">💼</div>
-          <h3>Formularios + Base de Datos</h3>
-          <p>Cada dato que capturas se convierte en información estructurada lista para ser utilizada dentro de tu sistema.</p>
-          <a href="#" class="offering-link">Explorar &rarr;</a>
-        </div>
-
-        <div class="offering-card">
-          <div class="offering-icon">🔐</div>
-          <h3>Habladores Inteligentes NFC</h3>
-          <p>Convierte espacios físicos en puntos de interacción digital. Información instantánea sin fricción.</p>
-          <a href="#" class="offering-link">Explorar &rarr;</a>
-        </div>
-
-        <div class="offering-card">
-          <div class="offering-icon">📊</div>
-          <h3>Experiencias Tecnológicas</h3>
-          <p>Diseñamos experiencias que combinan tecnología y percepción para generar impacto, recuerdos y conexión real.</p>
-          <a href="#" class="offering-link">Explorar &rarr;</a>
-        </div>
-
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <section class="contact-section" id="contacto">
-      <h2>Contacto</h2>
-      <div class="contact-wrapper">
-        <p class="contact-message">
-          Cuéntanos qué quieres construir.<br>
-          Si es posible imaginarlo, es posible estructurarlo.<br>
-          Nosotros nos encargamos de convertirlo en un sistema real.
+  <section class="products-section" id="productos">
+    <h2 style="color:#ffffff;"></h2>
+    <div class="products-grid">
+      
+      <div class="product-card">
+        <div class="product-icon">&#128295;</div>
+        <h3 style="color:#ffffff;">MEDUSA</h3>
+        <p style="color:#eaeaea;">
+          Controla quién entra, cuándo y cómo. Genera accesos únicos con códigos QR de una sola lectura, eliminando duplicidad y riesgos.<br>
+          Diseñado para eventos, espacios privados y experiencias donde el control no es opcional, es estratégico.
         </p>
+        <a href="#" class="product-link" style="color:#ffffff;">Conocer más &rarr;</a>
+      </div>
 
-        <div class="contact-buttons">
-          <a href="https://wa.link/giwkbo" target="_blank" class="contact-btn whatsapp-btn">
-            <span>💬</span> WhatsApp
-          </a>
-          <a href="mailto:manalfnfc@gmail.com" class="contact-btn email-btn">
-            <span>✉️</span> Email : manalfnfc@gmail.com 
-          </a>
-        </div>
+      <div class="product-card">
+        <div class="product-icon">&#128202;</div>
+        <h3 style="color:#ffffff;"> - </h3>
+        <p style="color:#eaeaea;"> muy pronto... 
+        </p>
+        <a href="#" class="product-link" style="color:#ffffff;"> &rarr;</a>
+      </div>
 
-        <p class="contact-tagline">
-          No todos necesitan esto.<br>
-          Solo quienes entienden el valor del control digital.
+      <div class="product-card">
+        <div class="product-icon">&#128272;</div>
+        <h3 style="color:#ffffff;"> - </h3>
+        <p style="color:#eaeaea;">
+          muy pronto... 
+        </p>
+        <a href="#" class="product-link" style="color:#ffffff;">------------- &rarr;</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="services-section" id="servicios">
+    <h2 style="color:#ffffff;"> Servicios calificados </h2>
+    <div class="services-grid">
+
+      <div class="service-item">
+        <h3 style="color:#ffffff;">Arquitectura Digital Personalizada</h3>
+        <p style="color:#eaeaea;">
+          Diseñamos la estructura completa de tu ecosistema digital para que cada parte cumpla una función clara dentro de tu crecimiento.
         </p>
       </div>
-    </section>
 
-    <footer class="footer">
-      <p>&copy; 2026 MANALF. Todos los derechos reservados.</p>
-    </footer>
+      <div class="service-item">
+        <h3 style="color:#ffffff;">Software a Medida</h3>
+        <p style="color:#eaeaea;">
+          Creamos soluciones que no existen en el mercado, adaptadas exactamente a cómo funciona tu negocio, no al revés.
+        </p>
+      </div>
 
+      <div class="service-item">
+        <h3 style="color:#ffffff;">Implementación Inteligente</h3>
+        <p style="color:#eaeaea;">
+          Activamos tu sistema listo para operar desde el primer momento, sin fricciones ni procesos innecesarios.
+        </p>
+      </div>
+
+      <div class="service-item">
+        <h3 style="color:#ffffff;">Soporte Evolutivo</h3>
+        <p style="color:#eaeaea;">
+          No solo mantenemos tu sistema, lo hacemos evolucionar contigo. Cada mejora responde a datos reales y uso real.
+        </p>
+      </div>
+
+      <div class="service-item">
+        <h3 style="color:#ffffff;">Activación de Equipo</h3>
+        <p style="color:#eaeaea;">
+          Tu equipo no solo usa el sistema, aprende a dominarlo para convertirlo en una herramienta de ventaja competitiva.
+        </p>
+      </div>
+
+      <div class="service-item">
+        <h3 style="color:#ffffff;">Optimización Continua</h3>
+        <p style="color:#eaeaea;">
+          Ajustamos cada detalle para mejorar rendimiento, eficiencia y resultados sin que tengas que detener tu operación.
+        </p>
+      </div>
+
+      <div class="service-item">
+        <h3 style="color:#ffffff;">Automatización con IA</h3>
+        <p style="color:#eaeaea;">
+          Bots que entienden tu negocio, responden por ti y convierten conversaciones en oportunidades constantes.
+        </p>
+      </div>
+
+      <div class="service-item">
+        <h3 style="color:#ffffff;">Digitalización de Información</h3>
+        <p style="color:#eaeaea;">
+          Transformamos datos dispersos en estructuras organizadas, accesibles y listas para ser utilizadas estratégicamente.
+        </p>
+      </div>
+
+      <div class="service-item">
+        <h3 style="color:#ffffff;">Experiencia Digital</h3>
+        <p style="color:#eaeaea;">
+          Diseñamos interfaces que guían, conectan y generan acción sin esfuerzo, donde cada interacción tiene un propósito.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="offerings-section" id="ofertas">
+    <h2 style="color:#ffffff;">Productos Inteligentes</h2>
+    <div class="offerings-grid">
+
+      <div class="offering-card">
+        <div class="offering-icon">🚀</div>
+        <h3 style="color:#ffffff;">Kit Emprendedor NFC</h3>
+        <p style="color:#eaeaea;">
+          Lleva tu identidad digital contigo. Comparte información, redes o servicios con un solo gesto.<br>
+          Una herramienta simple que genera impacto inmediato.
+        </p>
+        <a href="#" class="offering-link" style="color:#ffffff;">Explorar &rarr;</a>
+      </div>
+
+      <div class="offering-card">
+        <div class="offering-icon">📱</div>
+        <h3 style="color:#ffffff;">Identidad Digital Premium</h3>
+        <p style="color:#eaeaea;">
+          Toda tu presencia digital organizada en un solo espacio elegante, diseñado para transmitir claridad, valor y profesionalismo.
+        </p>
+        <a href="#" class="offering-link" style="color:#ffffff;">Explorar &rarr;</a>
+      </div>
+
+      <div class="offering-card">
+        <div class="offering-icon">🤖</div>
+        <h3 style="color:#ffffff;">Bots con IA</h3>
+        <p style="color:#eaeaea;">
+          Automatiza conversaciones sin perder personalidad. Responde, filtra y convierte sin depender de tu tiempo.
+        </p>
+        <a href="#" class="offering-link" style="color:#ffffff;">Explorar &rarr;</a>
+      </div>
+
+      <div class="offering-card">
+        <div class="offering-icon">💼</div>
+        <h3 style="color:#ffffff;">Formularios + Base de Datos</h3>
+        <p style="color:#eaeaea;">
+          Cada dato que capturas se convierte en información estructurada lista para ser utilizada dentro de tu sistema.
+        </p>
+        <a href="#" class="offering-link" style="color:#ffffff;">Explorar &rarr;</a>
+      </div>
+
+      <div class="offering-card">
+        <div class="offering-icon">🔐</div>
+        <h3 style="color:#ffffff;">Habladores Inteligentes NFC</h3>
+        <p style="color:#eaeaea;">
+          Convierte espacios físicos en puntos de interacción digital. Información instantánea sin fricción.
+        </p>
+        <a href="#" class="offering-link" style="color:#ffffff;">Explorar &rarr;</a>
+      </div>
+
+      <div class="offering-card">
+        <div class="offering-icon">📊</div>
+        <h3 style="color:#ffffff;">Experiencias Tecnológicas</h3>
+        <p style="color:#eaeaea;">
+          Diseñamos experiencias que combinan tecnología y percepción para generar impacto, recuerdos y conexión real.
+        </p>
+        <a href="#" class="offering-link" style="color:#ffffff;">Explorar &rarr;</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="contact-section" id="contacto">
+    <h2 style="color:#ffffff;">Contacto</h2>
+    <div class="contact-wrapper">
+      <p class="contact-message" style="color:#f0f0f0;">
+        Cuéntanos qué quieres construir.<br>
+        Si es posible imaginarlo, es posible estructurarlo.<br>
+        Nosotros nos encargamos de convertirlo en un sistema real.
+      </p>
+
+      <div class="contact-buttons">
+        <a href="https://wa.link/giwkbo" target="_blank" class="contact-btn whatsapp-btn">
+          <span>💬</span> WhatsApp
+        </a>
+        <a href="mailto:manalfnfc@gmail.com" class="contact-btn email-btn">
+          <span>✉️</span> Email : manalfnfc@gmail.com 
+        </a>
+      </div>
+
+      <p class="contact-tagline" style="color:#ffffff;">
+        No todos necesitan esto.<br>
+        Solo quienes entienden el valor del control digital.
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer" style="color:#ffffff;">
+    <p>&copy; 2026 MANALF. Todos los derechos reservados.</p>
+  </footer>
+
+</div>
+  
   </div>
 
   <script>
@@ -897,13 +1035,13 @@
     const staticBg = document.getElementById('staticBg');
     const blurOverlay = document.getElementById('blurOverlay');
     const mainContent = document.getElementById('mainContent');
-    const mainNav = document.getElementById('mainNav');
     const loader = document.getElementById('loader');
 
     let videoStarted = false;
     const VIDEO_DURATION = 5100; // 5.1s del video + margen
 
     // === PRECARGA ===
+    // Esperamos a que el video este listo para reproducir
     videoBg.load();
 
     function enableButton() {
@@ -915,14 +1053,17 @@
       loader.classList.add('visible');
     }
 
+    // Evento: el video puede reproducirse sin cortes
     videoBg.addEventListener('canplaythrough', enableButton, { once: true });
 
+    // Fallback: si tarda mas de 3s, activamos el boton igual
     setTimeout(() => {
       if (enterBtn.disabled && !videoStarted) {
         enableButton();
       }
     }, 3000);
 
+    // Mostrar loader mientras carga
     showLoader();
 
     // === CLICK EN EL BOTON ===
@@ -930,21 +1071,31 @@
       if (videoStarted) return;
       videoStarted = true;
 
+      // Audio: inicio del sistema
+      const audioStart = new Audio('data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==');
+      audioStart.play().catch(() => {});
+
+      // 1. Muestra el video
       videoBg.style.opacity = '1';
 
+      // 2. Intenta reproducir
       const playPromise = videoBg.play();
 
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
           console.log('Autoplay bloqueado:', err);
+          // Si falla la reproduccion, vamos directo al contenido
           skipToContent();
         });
       }
 
+      // 3. Desvanece el overlay blur
       blurOverlay.classList.add('hidden');
 
+      // 4. Cuando el video termina: crossfade a la imagen estatica
       videoBg.addEventListener('ended', onVideoEnded, { once: true });
 
+      // 5. Fallback: si el video se congela o falla, mostrar contenido a los 6s
       setTimeout(() => {
         if (!mainContent.classList.contains('visible')) {
           onVideoEnded();
@@ -953,13 +1104,19 @@
     });
 
     function onVideoEnded() {
+      // Audio: sistema iniciado
+      const audioEnd = new Audio('data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==');
+      audioEnd.play().catch(() => {});
+
+      // Crossfade rápido y sutil: video -> imagen estatica
       staticBg.style.opacity = '1';
-      videoBg.style.transition = 'opacity 1.5s ease';
+      videoBg.style.transition = 'opacity 0.3s ease';
       videoBg.style.opacity = '0';
 
+      // Muestra el contenido principal
       mainContent.classList.add('visible');
-      mainNav.classList.add('visible');
-      
+
+      // Activa animaciones de cards con IntersectionObserver
       animateOnScroll();
     }
 
@@ -968,7 +1125,6 @@
       videoBg.style.opacity = '0';
       blurOverlay.classList.add('hidden');
       mainContent.classList.add('visible');
-      mainNav.classList.add('visible');
       animateOnScroll();
     }
 
@@ -990,20 +1146,10 @@
       });
     }
 
+    // Si el contenido ya es visible (sin video), activar animaciones
     if (mainContent.classList.contains('visible')) {
       animateOnScroll();
     }
-
-    // Smooth scroll para navegacion
-    document.querySelectorAll('nav a').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
   </script>
 
 </body>
