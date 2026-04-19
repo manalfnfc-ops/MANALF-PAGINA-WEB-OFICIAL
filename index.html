@@ -1,723 +1,1010 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MANALF</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MANALF - Soluciones Tecnológicas</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: #050508;
-            color: #ffffff;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
 
-        /* Fondo con malla sutil */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-        }
+    /* ===== CAPAS DE FONDO ===== */
+    #staticBg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
 
-        /* Efecto de partículas sutiles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.4;
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.03) 1px, transparent 1px),
-                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.03) 1px, transparent 1px),
-                radial-gradient(circle at 40% 20%, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 100px 100px, 150px 150px, 200px 200px;
-        }
+    #videoBg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
 
-        /* Navegación flotante */
-        nav {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            background: rgba(10, 10, 18, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 50px;
-            padding: 12px 32px;
-            display: flex;
-            gap: 32px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
+    /* ===== OVERLAY BLUR INICIAL ===== */
+    .blur-overlay {
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.5s;
+    }
 
-        nav a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            letter-spacing: 0.5px;
-        }
+    .blur-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
 
-        nav a:hover {
-            color: #ffffff;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        }
+    .loader {
+      width: 24px;
+      height: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-top-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
 
-        /* Hero Section */
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 120px 20px 80px;
-            position: relative;
-        }
+    .loader.visible {
+      opacity: 1;
+    }
 
-        .hero-section h1 {
-            font-size: clamp(60px, 9vw, 120px);
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            font-weight: 800;
-            text-shadow: 
-                0 0 40px rgba(139, 92, 246, 0.3),
-                0 0 80px rgba(139, 92, 246, 0.1);
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 50%, #ffffff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 8s ease-in-out infinite;
-            background-size: 200% auto;
-        }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
-        @keyframes shimmer {
-            0%, 100% { background-position: 0% center; }
-            50% { background-position: 100% center; }
-        }
+    /* ===== BOTON CRISTAL ===== */
+    .glass-btn {
+      padding: 18px 52px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      font-size: 16px;
+      letter-spacing: 0.8px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow:
+        0 0 30px rgba(100, 180, 255, 0.05),
+        0 4px 20px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      font-weight: 500;
+      font-family: inherit;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .hero-section p {
-            color: rgba(255, 255, 255, 0.75);
-            font-size: clamp(16px, 2vw, 20px);
-            max-width: 700px;
-            margin: 0 auto 40px auto;
-            line-height: 1.7;
-            font-weight: 400;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
+    .glass-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
 
-        .hero-cta {
-            color: #ffffff;
-            padding: 16px 36px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            text-decoration: none;
-            backdrop-filter: blur(16px);
-            background: rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-block;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
+    .glass-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow:
+        0 12px 40px rgba(100, 180, 255, 0.12),
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
 
-        .hero-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.6s;
-        }
+    .glass-btn:hover::before {
+      opacity: 1;
+    }
 
-        .hero-cta:hover::before {
-            left: 100%;
-        }
+    .glass-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
 
-        .hero-cta:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2);
-        }
+    .glass-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
 
-        /* Secciones Generales */
-        section {
-            padding: 100px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-        }
+    /* ===== CONTENIDO PRINCIPAL ===== */
+    .main-content {
+      position: relative;
+      z-index: 5;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 2s ease 0.5s, visibility 2s ease 0.5s;
+      overflow-x: hidden;
+    }
 
-        section h2 {
-            font-size: clamp(32px, 5vw, 48px);
-            font-weight: 700;
-            margin-bottom: 60px;
-            text-align: center;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: none;
-        }
+    .main-content.visible {
+      opacity: 1;
+      visibility: visible;
+    }
 
-        /* Cards de Productos - Glassmorphism Oscuro */
-        .products-grid,
-        .offerings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-        }
+    /* ===== NAVEGACION ===== */
+    nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      background: rgba(10, 10, 18, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 50px;
+      padding: 12px 32px;
+      display: flex;
+      gap: 32px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transition: opacity 1s ease 1s;
+    }
 
-        .product-card,
-        .offering-card {
-            background: rgba(20, 20, 30, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 40px 32px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 
-                0 4px 24px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        }
+    nav.visible {
+      opacity: 1;
+    }
 
-        .product-card::before,
-        .offering-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        }
+    nav a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+    }
 
-        .product-card:hover,
-        .offering-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(139, 92, 246, 0.3);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                0 0 20px rgba(139, 92, 246, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
+    nav a:hover {
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
 
-        .product-icon,
-        .offering-icon {
-            font-size: 40px;
-            margin-bottom: 20px;
-            display: block;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
-        }
+    /* ===== SECCIONES ===== */
+    .hero-section {
+      padding: 120px 40px;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.55) 100%);
+    }
 
-        .product-card h3,
-        .offering-card h3 {
-            color: #ffffff;
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            letter-spacing: -0.3px;
-        }
+    .hero-section h1 {
+      font-size: clamp(60px, 9vw, 120px);
+      font-weight: 800;
+      margin-bottom: 20px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      text-shadow: 0 4px 20px rgba(0, 150, 255, 0.25), 0 2px 8px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(135deg, #fff 30%, #7ec8ff 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 8s ease-in-out infinite;
+      background-size: 200% auto;
+    }
 
-        .product-card p,
-        .offering-card p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 24px;
-            font-weight: 400;
-        }
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
 
-        .product-link,
-        .offering-link {
-            color: #a5b4fc;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
+    .hero-section p {
+      font-size: clamp(16px, 2vw, 20px);
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 700px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
 
-        .product-link::after,
-        .offering-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #a5b4fc;
-            transition: width 0.3s ease;
-        }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 36px;
+      background: rgba(0, 150, 255, 0.15);
+      border: 1px solid rgba(0, 180, 255, 0.3);
+      border-radius: 50px;
+      color: #7ec8ff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      backdrop-filter: blur(8px);
+    }
 
-        .product-link:hover,
-        .offering-link:hover {
-            color: #ffffff;
-            gap: 10px;
-        }
+    .hero-cta:hover {
+      background: rgba(0, 150, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 150, 255, 0.2);
+    }
 
-        .product-link:hover::after,
-        .offering-link:hover::after {
-            width: 100%;
-        }
+    /* ===== SECCIONES GENERALES ===== */
+    section {
+      padding: 100px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
 
-        /* Servicios Grid */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
+    section h2 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      margin-bottom: 60px;
+      text-align: center;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #7ec8ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+    }
 
-        .service-item {
-            background: rgba(20, 20, 30, 0.5);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 32px;
-            transition: all 0.3s ease;
-        }
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      margin: 0 auto;
+      max-width: 800px;
+    }
 
-        .service-item:hover {
-            background: rgba(30, 30, 45, 0.7);
-            border-color: rgba(139, 92, 246, 0.2);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
+    /* ===== PRODUCTOS SAAS ===== */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 80px;
+    }
 
-        .service-item h3 {
-            color: #ffffff;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .product-card {
+      background: rgba(20, 20, 30, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 40px 32px;
+      text-align: center;
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
 
-        .service-item h3::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
-        }
+    .product-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        .service-item p {
-            color: rgba(255, 255, 255, 0.65);
-            font-size: 14px;
-            line-height: 1.7;
-            font-weight: 400;
-        }
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    }
 
-        /* Sección de Contacto */
-        .contact-section {
-            text-align: center;
-        }
+    .product-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 150, 255, 0.08) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
 
-        .contact-message {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: clamp(18px, 3vw, 24px);
-            line-height: 1.8;
-            margin-bottom: 48px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            font-weight: 400;
-        }
+    .product-card:hover {
+      background: rgba(30, 30, 45, 0.7);
+      border-color: rgba(0, 180, 255, 0.25);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 25px 50px rgba(0, 100, 200, 0.15);
+    }
 
-        .contact-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 48px;
-        }
+    .product-card:hover::after {
+      opacity: 1;
+    }
 
-        .contact-btn {
-            padding: 16px 32px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(16px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
+    .product-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+    }
 
-        .whatsapp-btn {
-            background: rgba(37, 211, 102, 0.15);
-            color: #25d366;
-            border-color: rgba(37, 211, 102, 0.3);
-        }
+    .product-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+      color: #ffffff;
+    }
 
-        .whatsapp-btn:hover {
-            background: rgba(37, 211, 102, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.2);
-            color: #4ade80;
-        }
+    .product-card p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 25px;
+      position: relative;
+      z-index: 1;
+    }
 
-        .email-btn {
-            background: rgba(139, 92, 246, 0.15);
-            color: #a5b4fc;
-            border-color: rgba(139, 92, 246, 0.3);
-        }
+    .product-link {
+      display: inline-block;
+      padding: 12px 28px;
+      background: rgba(0, 150, 255, 0.1);
+      border: 1px solid rgba(0, 180, 255, 0.2);
+      border-radius: 30px;
+      color: #7ec8ff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.35s ease;
+      position: relative;
+      z-index: 1;
+    }
 
-        .email-btn:hover {
-            background: rgba(139, 92, 246, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.2);
-            color: #c7d2fe;
-        }
+    .product-link:hover {
+      background: rgba(0, 150, 255, 0.25);
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(0, 150, 255, 0.15);
+      color: #ffffff;
+    }
 
-        .contact-tagline {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 14px;
-            font-style: italic;
-            line-height: 1.6;
-        }
+    /* ===== SERVICIOS ===== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 40px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 14px;
-            margin-top: 60px;
-        }
+    .service-item {
+      background: rgba(20, 20, 30, 0.5);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      opacity: 0;
+      transform: translateY(20px);
+    }
 
-        /* Separadores de sección */
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            margin: 0 auto;
-            max-width: 800px;
-        }
+    .service-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        /* Scrollbar personalizada */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+    .service-item:hover {
+      background: rgba(30, 30, 45, 0.7);
+      border-color: rgba(0, 180, 255, 0.2);
+      transform: translateX(6px);
+      box-shadow: 0 10px 30px rgba(0, 100, 200, 0.1);
+    }
 
-        ::-webkit-scrollbar-track {
-            background: #050508;
-        }
+    .service-item h3 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
+    .service-item h3::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: linear-gradient(135deg, #0096ff, #7ec8ff);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+    }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
+    .service-item p {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
 
-        /* Animación de entrada */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    /* ===== PRODUCTOS INTELIGENTES (OFERTAS) ===== */
+    .offerings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
 
-        .product-card,
-        .offering-card,
-        .service-item {
-            animation: fadeInUp 0.6s ease-out forwards;
-            opacity: 0;
-        }
+    .offering-card {
+      background: rgba(20, 20, 30, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 40px 32px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
 
-        .product-card:nth-child(1) { animation-delay: 0.1s; }
-        .product-card:nth-child(2) { animation-delay: 0.2s; }
-        .product-card:nth-child(3) { animation-delay: 0.3s; }
-        .offering-card:nth-child(1) { animation-delay: 0.1s; }
-        .offering-card:nth-child(2) { animation-delay: 0.15s; }
-        .offering-card:nth-child(3) { animation-delay: 0.2s; }
-        .offering-card:nth-child(4) { animation-delay: 0.25s; }
-        .offering-card:nth-child(5) { animation-delay: 0.3s; }
-        .offering-card:nth-child(6) { animation-delay: 0.35s; }
+    .offering-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        @media (max-width: 768px) {
-            nav {
-                gap: 16px;
-                padding: 10px 20px;
-                font-size: 13px;
-            }
-            
-            section {
-                padding: 60px 16px;
-            }
-            
-            .products-grid,
-            .offerings-grid,
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    .offering-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    }
+
+    .offering-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0, 180, 255, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 150, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .offering-icon {
+      font-size: 40px;
+      margin-bottom: 20px;
+      display: block;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+    }
+
+    .offering-card h3 {
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      letter-spacing: -0.3px;
+    }
+
+    .offering-card p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .offering-link {
+      color: #7ec8ff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .offering-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #7ec8ff;
+      transition: width 0.3s ease;
+    }
+
+    .offering-link:hover {
+      color: #ffffff;
+      gap: 10px;
+    }
+
+    .offering-link:hover::after {
+      width: 100%;
+    }
+
+    /* ===== CONTACTO ===== */
+    .contact-section {
+      text-align: center;
+    }
+
+    .contact-message {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: clamp(18px, 3vw, 24px);
+      line-height: 1.8;
+      margin-bottom: 48px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 400;
+    }
+
+    .contact-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .contact-btn {
+      padding: 16px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .whatsapp-btn {
+      background: rgba(37, 211, 102, 0.15);
+      color: #25d366;
+      border-color: rgba(37, 211, 102, 0.3);
+    }
+
+    .whatsapp-btn:hover {
+      background: rgba(37, 211, 102, 0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.2);
+      color: #4ade80;
+    }
+
+    .email-btn {
+      background: rgba(0, 150, 255, 0.15);
+      color: #7ec8ff;
+      border-color: rgba(0, 180, 255, 0.3);
+    }
+
+    .email-btn:hover {
+      background: rgba(0, 150, 255, 0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 150, 255, 0.2);
+      color: #ffffff;
+    }
+
+    .contact-tagline {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 14px;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding: 60px 40px;
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      margin-top: 60px;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #050508;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      nav {
+        gap: 16px;
+        padding: 10px 20px;
+        font-size: 13px;
+      }
+
+      .hero-section {
+        padding: 80px 20px;
+      }
+
+      section {
+        padding: 60px 20px;
+      }
+
+      .products-grid,
+      .offerings-grid,
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .glass-btn {
+        font-size: 15px;
+        padding: 16px 40px;
+      }
+
+      .contact-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    /* ===== REDUCIR MOVIMIENTO ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="particles"></div>
-    
-    <nav>
-        <a href="#productos">Productos</a>
-        <a href="#servicios">Servicios</a>
-        <a href="#ofertas">Ofertas</a>
-        <a href="#contacto">Contacto</a>
+
+  <!-- Imagen estatica del ultimo frame (capa de respaldo) -->
+  <img id="staticBg" src="images/final-frame.jpg" alt="">
+
+  <!-- Video de fondo -->
+  <video id="videoBg" preload="auto" muted playsinline disablePictureInPicture>
+    <source src="video/intro.webm" type="video/webm">
+    <source src="video/intro.mp4" type="video/mp4">
+  </video>
+
+  <!-- Overlay inicial con blur -->
+  <div class="blur-overlay" id="blurOverlay">
+    <button class="glass-btn" id="enterBtn" disabled>
+      Te estábamos esperando... adelante
+    </button>
+    <div class="loader" id="loader"></div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="main-content" id="mainContent">
+
+    <nav id="mainNav">
+      <a href="#productos">Productos</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#ofertas">Ofertas</a>
+      <a href="#contacto">Contacto</a>
     </nav>
 
-    <div class="main-content" id="mainContent">
+    <section class="hero-section">
+      <h1>MANALF</h1>
+      <p>Diseñamos infraestructuras digitales inteligentes que convierten ideas en sistemas reales, automatizados y escalables.<br>
+      Centraliza, controla y optimiza tu operación desde una sola estructura.</p>
+      <a href="#productos" class="hero-cta">Explorar ecosistemas &rarr;</a>
+    </section>
 
-        <section class="hero-section">
-            <h1>MANALF</h1>
-            <p>
-                Diseñamos infraestructuras digitales inteligentes que convierten ideas en sistemas reales, automatizados y escalables.<br>
-                Centraliza, controla y optimiza tu operación desde una sola estructura.
-            </p>
-            <a href="#productos" class="hero-cta">Explorar ecosistemas &rarr;</a>
-        </section>
+    <div class="section-divider"></div>
 
-        <div class="section-divider"></div>
+    <section id="productos">
+      <h2>SAAS</h2>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-icon">&#128295;</div>
+          <h3>MEDUSA</h3>
+          <p>Controla quién entra, cuándo y cómo. Genera accesos únicos con códigos QR de una sola lectura, eliminando duplicidad y riesgos.<br>
+          Diseñado para eventos, espacios privados y experiencias donde el control no es opcional, es estratégico.</p>
+          <a href="#" class="product-link">Conocer más &rarr;</a>
+        </div>
 
-        <section id="productos">
-            <h2>SAAS</h2>
-            <div class="products-grid">
-                <div class="product-card">
-                    <div class="product-icon">&#128295;</div>
-                    <h3>MEDUSA</h3>
-                    <p>
-                        Controla quién entra, cuándo y cómo. Genera accesos únicos con códigos QR de una sola lectura, eliminando duplicidad y riesgos.<br>
-                        Diseñado para eventos, espacios privados y experiencias donde el control no es opcional, es estratégico.
-                    </p>
-                    <a href="#" class="product-link">Conocer más &rarr;</a>
-                </div>
+        <div class="product-card">
+          <div class="product-icon">&#128202;</div>
+          <h3>-</h3>
+          <p>muy pronto...</p>
+          <a href="#" class="product-link"> &rarr;</a>
+        </div>
 
-                <div class="product-card">
-                    <div class="product-icon">&#128202;</div>
-                    <h3>-</h3>
-                    <p>muy pronto...</p>
-                    <a href="#" class="product-link"> &rarr;</a>
-                </div>
+        <div class="product-card">
+          <div class="product-icon">&#128272;</div>
+          <h3>-</h3>
+          <p>muy pronto...</p>
+          <a href="#" class="product-link">------------- &rarr;</a>
+        </div>
+      </div>
+    </section>
 
-                <div class="product-card">
-                    <div class="product-icon">&#128272;</div>
-                    <h3>-</h3>
-                    <p>muy pronto...</p>
-                    <a href="#" class="product-link">------------- &rarr;</a>
-                </div>
-            </div>
-        </section>
+    <div class="section-divider"></div>
 
-        <div class="section-divider"></div>
+    <section class="services-section" id="servicios">
+      <h2>Servicios calificados</h2>
+      <div class="services-grid">
 
-        <section class="services-section" id="servicios">
-            <h2>Servicios calificados</h2>
-            <div class="services-grid">
+        <div class="service-item">
+          <h3>Arquitectura Digital Personalizada</h3>
+          <p>Diseñamos la estructura completa de tu ecosistema digital para que cada parte cumpla una función clara dentro de tu crecimiento.</p>
+        </div>
 
-                <div class="service-item">
-                    <h3>Arquitectura Digital Personalizada</h3>
-                    <p>
-                        Diseñamos la estructura completa de tu ecosistema digital para que cada parte cumpla una función clara dentro de tu crecimiento.
-                    </p>
-                </div>
+        <div class="service-item">
+          <h3>Software a Medida</h3>
+          <p>Creamos soluciones que no existen en el mercado, adaptadas exactamente a cómo funciona tu negocio, no al revés.</p>
+        </div>
 
-                <div class="service-item">
-                    <h3>Software a Medida</h3>
-                    <p>
-                        Creamos soluciones que no existen en el mercado, adaptadas exactamente a cómo funciona tu negocio, no al revés.
-                    </p>
-                </div>
+        <div class="service-item">
+          <h3>Implementación Inteligente</h3>
+          <p>Activamos tu sistema listo para operar desde el primer momento, sin fricciones ni procesos innecesarios.</p>
+        </div>
 
-                <div class="service-item">
-                    <h3>Implementación Inteligente</h3>
-                    <p>
-                        Activamos tu sistema listo para operar desde el primer momento, sin fricciones ni procesos innecesarios.
-                    </p>
-                </div>
+        <div class="service-item">
+          <h3>Soporte Evolutivo</h3>
+          <p>No solo mantenemos tu sistema, lo hacemos evolucionar contigo. Cada mejora responde a datos reales y uso real.</p>
+        </div>
 
-                <div class="service-item">
-                    <h3>Soporte Evolutivo</h3>
-                    <p>
-                        No solo mantenemos tu sistema, lo hacemos evolucionar contigo. Cada mejora responde a datos reales y uso real.
-                    </p>
-                </div>
+        <div class="service-item">
+          <h3>Activación de Equipo</h3>
+          <p>Tu equipo no solo usa el sistema, aprende a dominarlo para convertirlo en una herramienta de ventaja competitiva.</p>
+        </div>
 
-                <div class="service-item">
-                    <h3>Activación de Equipo</h3>
-                    <p>
-                        Tu equipo no solo usa el sistema, aprende a dominarlo para convertirlo en una herramienta de ventaja competitiva.
-                    </p>
-                </div>
+        <div class="service-item">
+          <h3>Optimización Continua</h3>
+          <p>Ajustamos cada detalle para mejorar rendimiento, eficiencia y resultados sin que tengas que detener tu operación.</p>
+        </div>
 
-                <div class="service-item">
-                    <h3>Optimización Continua</h3>
-                    <p>
-                        Ajustamos cada detalle para mejorar rendimiento, eficiencia y resultados sin que tengas que detener tu operación.
-                    </p>
-                </div>
+        <div class="service-item">
+          <h3>Automatización con IA</h3>
+          <p>Bots que entienden tu negocio, responden por ti y convierten conversaciones en oportunidades constantes.</p>
+        </div>
 
-                <div class="service-item">
-                    <h3>Automatización con IA</h3>
-                    <p>
-                        Bots que entienden tu negocio, responden por ti y convierten conversaciones en oportunidades constantes.
-                    </p>
-                </div>
+        <div class="service-item">
+          <h3>Digitalización de Información</h3>
+          <p>Transformamos datos dispersos en estructuras organizadas, accesibles y listas para ser utilizadas estratégicamente.</p>
+        </div>
 
-                <div class="service-item">
-                    <h3>Digitalización de Información</h3>
-                    <p>
-                        Transformamos datos dispersos en estructuras organizadas, accesibles y listas para ser utilizadas estratégicamente.
-                    </p>
-                </div>
+        <div class="service-item">
+          <h3>Experiencia Digital</h3>
+          <p>Diseñamos interfaces que guían, conectan y generan acción sin esfuerzo, donde cada interacción tiene un propósito.</p>
+        </div>
 
-                <div class="service-item">
-                    <h3>Experiencia Digital</h3>
-                    <p>
-                        Diseñamos interfaces que guían, conectan y generan acción sin esfuerzo, donde cada interacción tiene un propósito.
-                    </p>
-                </div>
+      </div>
+    </section>
 
-            </div>
-        </section>
+    <div class="section-divider"></div>
 
-        <div class="section-divider"></div>
+    <section class="offerings-section" id="ofertas">
+      <h2>Productos Inteligentes</h2>
+      <div class="offerings-grid">
 
-        <section class="offerings-section" id="ofertas">
-            <h2>Productos Inteligentes</h2>
-            <div class="offerings-grid">
+        <div class="offering-card">
+          <div class="offering-icon">🚀</div>
+          <h3>Kit Emprendedor NFC</h3>
+          <p>Lleva tu identidad digital contigo. Comparte información, redes o servicios con un solo gesto.<br>
+          Una herramienta simple que genera impacto inmediato.</p>
+          <a href="#" class="offering-link">Explorar &rarr;</a>
+        </div>
 
-                <div class="offering-card">
-                    <div class="offering-icon">🚀</div>
-                    <h3>Kit Emprendedor NFC</h3>
-                    <p>
-                        Lleva tu identidad digital contigo. Comparte información, redes o servicios con un solo gesto.<br>
-                        Una herramienta simple que genera impacto inmediato.
-                    </p>
-                    <a href="#" class="offering-link">Explorar &rarr;</a>
-                </div>
+        <div class="offering-card">
+          <div class="offering-icon">📱</div>
+          <h3>Identidad Digital Premium</h3>
+          <p>Toda tu presencia digital organizada en un solo espacio elegante, diseñado para transmitir claridad, valor y profesionalismo.</p>
+          <a href="#" class="offering-link">Explorar &rarr;</a>
+        </div>
 
-                <div class="offering-card">
-                    <div class="offering-icon">📱</div>
-                    <h3>Identidad Digital Premium</h3>
-                    <p>
-                        Toda tu presencia digital organizada en un solo espacio elegante, diseñado para transmitir claridad, valor y profesionalismo.
-                    </p>
-                    <a href="#" class="offering-link">Explorar &rarr;</a>
-                </div>
+        <div class="offering-card">
+          <div class="offering-icon">🤖</div>
+          <h3>Bots con IA</h3>
+          <p>Automatiza conversaciones sin perder personalidad. Responde, filtra y convierte sin depender de tu tiempo.</p>
+          <a href="#" class="offering-link">Explorar &rarr;</a>
+        </div>
 
-                <div class="offering-card">
-                    <div class="offering-icon">🤖</div>
-                    <h3>Bots con IA</h3>
-                    <p>
-                        Automatiza conversaciones sin perder personalidad. Responde, filtra y convierte sin depender de tu tiempo.
-                    </p>
-                    <a href="#" class="offering-link">Explorar &rarr;</a>
-                </div>
+        <div class="offering-card">
+          <div class="offering-icon">💼</div>
+          <h3>Formularios + Base de Datos</h3>
+          <p>Cada dato que capturas se convierte en información estructurada lista para ser utilizada dentro de tu sistema.</p>
+          <a href="#" class="offering-link">Explorar &rarr;</a>
+        </div>
 
-                <div class="offering-card">
-                    <div class="offering-icon">💼</div>
-                    <h3>Formularios + Base de Datos</h3>
-                    <p>
-                        Cada dato que capturas se convierte en información estructurada lista para ser utilizada dentro de tu sistema.
-                    </p>
-                    <a href="#" class="offering-link">Explorar &rarr;</a>
-                </div>
+        <div class="offering-card">
+          <div class="offering-icon">🔐</div>
+          <h3>Habladores Inteligentes NFC</h3>
+          <p>Convierte espacios físicos en puntos de interacción digital. Información instantánea sin fricción.</p>
+          <a href="#" class="offering-link">Explorar &rarr;</a>
+        </div>
 
-                <div class="offering-card">
-                    <div class="offering-icon">🔐</div>
-                    <h3>Habladores Inteligentes NFC</h3>
-                    <p>
-                        Convierte espacios físicos en puntos de interacción digital. Información instantánea sin fricción.
-                    </p>
-                    <a href="#" class="offering-link">Explorar &rarr;</a>
-                </div>
+        <div class="offering-card">
+          <div class="offering-icon">📊</div>
+          <h3>Experiencias Tecnológicas</h3>
+          <p>Diseñamos experiencias que combinan tecnología y percepción para generar impacto, recuerdos y conexión real.</p>
+          <a href="#" class="offering-link">Explorar &rarr;</a>
+        </div>
 
-                <div class="offering-card">
-                    <div class="offering-icon">📊</div>
-                    <h3>Experiencias Tecnológicas</h3>
-                    <p>
-                        Diseñamos experiencias que combinan tecnología y percepción para generar impacto, recuerdos y conexión real.
-                    </p>
-                    <a href="#" class="offering-link">Explorar &rarr;</a>
-                </div>
+      </div>
+    </section>
 
-            </div>
-        </section>
+    <div class="section-divider"></div>
 
-        <div class="section-divider"></div>
+    <section class="contact-section" id="contacto">
+      <h2>Contacto</h2>
+      <div class="contact-wrapper">
+        <p class="contact-message">
+          Cuéntanos qué quieres construir.<br>
+          Si es posible imaginarlo, es posible estructurarlo.<br>
+          Nosotros nos encargamos de convertirlo en un sistema real.
+        </p>
 
-        <section class="contact-section" id="contacto">
-            <h2>Contacto</h2>
-            <div class="contact-wrapper">
-                <p class="contact-message">
-                    Cuéntanos qué quieres construir.<br>
-                    Si es posible imaginarlo, es posible estructurarlo.<br>
-                    Nosotros nos encargamos de convertirlo en un sistema real.
-                </p>
+        <div class="contact-buttons">
+          <a href="https://wa.link/giwkbo" target="_blank" class="contact-btn whatsapp-btn">
+            <span>💬</span> WhatsApp
+          </a>
+          <a href="mailto:manalfnfc@gmail.com" class="contact-btn email-btn">
+            <span>✉️</span> Email : manalfnfc@gmail.com 
+          </a>
+        </div>
 
-                <div class="contact-buttons">
-                    <a href="https://wa.link/giwkbo" target="_blank" class="contact-btn whatsapp-btn">
-                        <span>💬</span> WhatsApp
-                    </a>
-                    <a href="mailto:manalfnfc@gmail.com" class="contact-btn email-btn">
-                        <span>✉️</span> Email : manalfnfc@gmail.com 
-                    </a>
-                </div>
+        <p class="contact-tagline">
+          No todos necesitan esto.<br>
+          Solo quienes entienden el valor del control digital.
+        </p>
+      </div>
+    </section>
 
-                <p class="contact-tagline">
-                    No todos necesitan esto.<br>
-                    Solo quienes entienden el valor del control digital.
-                </p>
-            </div>
-        </section>
+    <footer class="footer">
+      <p>&copy; 2026 MANALF. Todos los derechos reservados.</p>
+    </footer>
 
-        <footer class="footer">
-            <p>&copy; 2026 MANALF. Todos los derechos reservados.</p>
-        </footer>
+  </div>
 
-    </div>
+  <script>
+    const enterBtn = document.getElementById('enterBtn');
+    const videoBg = document.getElementById('videoBg');
+    const staticBg = document.getElementById('staticBg');
+    const blurOverlay = document.getElementById('blurOverlay');
+    const mainContent = document.getElementById('mainContent');
+    const mainNav = document.getElementById('mainNav');
+    const loader = document.getElementById('loader');
+
+    let videoStarted = false;
+    const VIDEO_DURATION = 5100; // 5.1s del video + margen
+
+    // === PRECARGA ===
+    videoBg.load();
+
+    function enableButton() {
+      enterBtn.disabled = false;
+      loader.classList.remove('visible');
+    }
+
+    function showLoader() {
+      loader.classList.add('visible');
+    }
+
+    videoBg.addEventListener('canplaythrough', enableButton, { once: true });
+
+    setTimeout(() => {
+      if (enterBtn.disabled && !videoStarted) {
+        enableButton();
+      }
+    }, 3000);
+
+    showLoader();
+
+    // === CLICK EN EL BOTON ===
+    enterBtn.addEventListener('click', () => {
+      if (videoStarted) return;
+      videoStarted = true;
+
+      videoBg.style.opacity = '1';
+
+      const playPromise = videoBg.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.log('Autoplay bloqueado:', err);
+          skipToContent();
+        });
+      }
+
+      blurOverlay.classList.add('hidden');
+
+      videoBg.addEventListener('ended', onVideoEnded, { once: true });
+
+      setTimeout(() => {
+        if (!mainContent.classList.contains('visible')) {
+          onVideoEnded();
+        }
+      }, VIDEO_DURATION + 1000);
+    });
+
+    function onVideoEnded() {
+      staticBg.style.opacity = '1';
+      videoBg.style.transition = 'opacity 1.5s ease';
+      videoBg.style.opacity = '0';
+
+      mainContent.classList.add('visible');
+      mainNav.classList.add('visible');
+      
+      animateOnScroll();
+    }
+
+    function skipToContent() {
+      staticBg.style.opacity = '1';
+      videoBg.style.opacity = '0';
+      blurOverlay.classList.add('hidden');
+      mainContent.classList.add('visible');
+      mainNav.classList.add('visible');
+      animateOnScroll();
+    }
+
+    // === ANIMACIONES SCROLL ===
+    function animateOnScroll() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, index * 100);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.product-card, .service-item, .offering-card').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    if (mainContent.classList.contains('visible')) {
+      animateOnScroll();
+    }
+
+    // Smooth scroll para navegacion
+    document.querySelectorAll('nav a').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
