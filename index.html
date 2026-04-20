@@ -71,6 +71,7 @@
       opacity: 0;
       transition: opacity 1.2s ease;
       pointer-events: none;
+      will-change: transform;
     }
 
     #videoBg {
@@ -133,6 +134,9 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      background: rgba(10, 5, 25, 0);
     }
 
     @keyframes pulse-float {
@@ -163,7 +167,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* ===== BOTON CRISTAL UVa ===== */
+    /* ===== BOTON CRISTAL UVA ===== */
     .glass-btn {
       position: relative;
       padding: 20px 56px;
@@ -306,19 +310,32 @@
     }
 
     .hero-section h1 {
-      font-size: clamp(64px, 10vw, 130px);
+      font-size: clamp(92px, 14vw, 160px);
       font-weight: 900;
       margin-bottom: 24px;
       letter-spacing: 8px;
       text-transform: uppercase;
-      background: linear-gradient(135deg, #ffffff 0%, #d8b4fe 50%, #a78bfa 100%);
+      background: linear-gradient(135deg, #ffffff 0%, #d8b4fe 40%, #a78bfa 70%, #00d4ff 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      background-size: 200% auto;
-      animation: shimmer 6s ease-in-out infinite;
-      filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.3));
-      line-height: 1.1;
+      background-size: 300% auto;
+      animation: shimmer 8s ease-in-out infinite;
+      filter: drop-shadow(0 0 60px rgba(139, 92, 246, 0.5)) drop-shadow(0 0 20px rgba(0, 212, 255, 0.3));
+      line-height: 1;
+      position: relative;
+      text-shadow: 0 0 80px rgba(124, 58, 237, 0.3);
+      letter-spacing: -2px;
+    }
+
+    .hero-section h1::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(ellipse at 50% 50%, rgba(124, 58, 237, 0.1), transparent 70%);
+      border-radius: 50%;
+      z-index: -1;
+      filter: blur(40px);
     }
 
     @keyframes shimmer {
@@ -349,10 +366,11 @@
       font-size: 1.05rem;
       font-weight: 600;
       letter-spacing: 0.5px;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       backdrop-filter: blur(12px);
       position: relative;
       overflow: hidden;
+      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
 
     .hero-cta::before {
@@ -372,8 +390,8 @@
 
     .hero-cta:hover {
       background: rgba(124, 58, 237, 0.3);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(139, 92, 246, 0.25);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 16px 48px rgba(139, 92, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25);
       border-color: rgba(192, 132, 252, 0.6);
       color: #ffffff;
     }
@@ -426,7 +444,16 @@
       height: 1px;
       max-width: 800px;
       margin: 0 auto;
-      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), rgba(139, 92, 246, 0.5), transparent);
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), rgba(139, 92, 246, 0.4), transparent);
+      position: relative;
+    }
+
+    .section-divider::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background: linear-gradient(180deg, transparent, rgba(124, 58, 237, 0.05), transparent);
+      filter: blur(20px);
     }
 
     /* ===== GRIDS ===== */
@@ -446,10 +473,10 @@
     /* ===== TARJETAS SISTEMAS/PRODUCTOS - FUTURISTA ===== */
     .system-card,
     .product-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--glass-border);
+      background: rgba(15, 10, 30, 0.65);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border: 1px solid rgba(139, 92, 246, 0.22);
       border-radius: 24px;
       padding: 44px 32px;
       text-align: center;
@@ -459,7 +486,8 @@
       overflow: hidden;
       opacity: 0;
       transform: translateY(40px) scale(0.96);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1.5px 0 rgba(255, 255, 255, 0.12);
+      will-change: transform, box-shadow;
     }
 
     .system-card.visible,
@@ -473,7 +501,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(139, 92, 246, 0.12) 50%, transparent 70%);
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(139, 92, 246, 0.18) 50%, transparent 70%);
       opacity: 0;
       transition: opacity 0.5s ease;
     }
@@ -486,19 +514,19 @@
       left: -100%;
       width: 60%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
       transform: skewX(-20deg);
       transition: left 0.8s ease;
     }
 
     .system-card:hover,
     .product-card:hover {
-      border-color: var(--glass-border-hover);
-      transform: translateY(-12px) scale(1.02);
+      border-color: rgba(168, 85, 247, 0.6);
+      transform: translateY(-12px) scale(1.02) perspective(1000px) rotateX(2deg) rotateY(-1deg);
       box-shadow: 
-        0 24px 64px rgba(76, 29, 149, 0.25), 
-        0 0 0 1px rgba(0, 212, 255, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        0 32px 80px rgba(76, 29, 149, 0.35), 
+        0 0 0 1px rgba(0, 212, 255, 0.3),
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.25);
     }
 
     .system-card:hover::before,
@@ -555,12 +583,24 @@
       margin-bottom: 24px;
       display: block;
       filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.4));
-      transition: transform 0.4s ease;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .product-image {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      margin: 0 auto 24px;
+      filter: drop-shadow(0 8px 24px rgba(0, 212, 255, 0.3));
     }
 
     .system-card:hover .system-icon,
     .product-card:hover .product-icon {
-      transform: scale(1.15) rotate(-5deg);
+      transform: scale(1.2) rotate(-8deg);
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.15) perspective(1000px) rotateZ(-3deg) rotateY(5deg);
     }
 
     .system-card h3,
@@ -590,18 +630,20 @@
       align-items: center;
       gap: 8px;
       padding: 14px 32px;
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.15));
-      border: 1px solid rgba(0, 212, 255, 0.25);
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(124, 58, 237, 0.18));
+      border: 1px solid rgba(0, 212, 255, 0.3);
       border-radius: 50px;
       color: #a5f3fc;
       text-decoration: none;
       font-size: 0.95rem;
       font-weight: 600;
-      transition: all 0.4s ease;
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
       overflow: hidden;
       z-index: 1;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     .btn-reveal::before {
@@ -611,8 +653,8 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left 0.6s ease;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+      transition: left 0.7s ease;
       z-index: -1;
     }
 
@@ -621,16 +663,16 @@
     }
 
     .btn-reveal:hover {
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.25), rgba(124, 58, 237, 0.3));
-      border-color: rgba(0, 212, 255, 0.5);
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.28), rgba(124, 58, 237, 0.35));
+      border-color: rgba(0, 212, 255, 0.6);
       color: #ffffff;
-      transform: scale(1.05);
-      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.25), 0 0 20px rgba(124, 58, 237, 0.2);
+      transform: scale(1.08);
+      box-shadow: 0 12px 40px rgba(0, 212, 255, 0.3), 0 0 20px rgba(124, 58, 237, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
     .btn-reveal.locked-btn {
-      background: rgba(100, 100, 100, 0.1);
-      border-color: rgba(255, 255, 255, 0.1);
+      background: rgba(100, 100, 100, 0.08);
+      border-color: rgba(255, 255, 255, 0.08);
       color: rgba(255, 255, 255, 0.3);
       cursor: not-allowed;
     }
@@ -646,10 +688,10 @@
 
     /* ===== TARJETAS SERVICIOS ===== */
     .service-item {
-      background: rgba(20, 15, 40, 0.55);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(139, 92, 246, 0.1);
+      background: rgba(20, 15, 40, 0.6);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(139, 92, 246, 0.15);
       border-radius: 20px;
       padding: 36px 32px;
       transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -657,7 +699,8 @@
       overflow: hidden;
       opacity: 0;
       transform: translateY(30px);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      will-change: transform, box-shadow;
     }
 
     .service-item.visible {
@@ -678,10 +721,10 @@
     }
 
     .service-item:hover {
-      background: rgba(30, 25, 55, 0.7);
-      border-color: rgba(0, 212, 255, 0.25);
+      background: rgba(30, 25, 55, 0.8);
+      border-color: rgba(0, 212, 255, 0.35);
       transform: translateY(-6px) translateX(4px);
-      box-shadow: 0 16px 48px rgba(76, 29, 149, 0.2);
+      box-shadow: 0 20px 60px rgba(76, 29, 149, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
 
     .service-item:hover::before {
@@ -721,10 +764,10 @@
     }
 
     .contact-wrapper {
-      background: rgba(15, 10, 35, 0.6);
-      backdrop-filter: blur(32px);
-      -webkit-backdrop-filter: blur(32px);
-      border: 1px solid rgba(0, 212, 255, 0.15);
+      background: rgba(15, 10, 35, 0.7);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border: 1px solid rgba(0, 212, 255, 0.18);
       border-radius: 40px;
       padding: 80px 60px;
       max-width: 900px;
@@ -732,9 +775,9 @@
       position: relative;
       overflow: hidden;
       box-shadow: 
-        0 25px 80px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(139, 92, 246, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 30px 100px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(139, 92, 246, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
     }
 
     .contact-wrapper::before {
@@ -744,8 +787,8 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-                  radial-gradient(circle at 70% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+      background: radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
       pointer-events: none;
       animation: rotate-bg 20s linear infinite;
     }
@@ -788,18 +831,20 @@
       transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       border: 2px solid;
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
       min-width: 220px;
       justify-content: center;
+      will-change: transform;
     }
 
     .contact-btn::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, transparent 60%);
       opacity: 0;
       transition: opacity 0.4s ease;
     }
@@ -815,44 +860,44 @@
     }
 
     .whatsapp-btn {
-      background: linear-gradient(135deg, rgba(37, 211, 102, 0.15), rgba(37, 211, 102, 0.05));
+      background: linear-gradient(135deg, rgba(37, 211, 102, 0.18), rgba(37, 211, 102, 0.08));
       color: #4ade80;
-      border-color: rgba(74, 222, 128, 0.4);
+      border-color: rgba(74, 222, 128, 0.5);
     }
 
     .whatsapp-btn:hover {
-      background: linear-gradient(135deg, rgba(37, 211, 102, 0.3), rgba(37, 211, 102, 0.1));
-      transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 16px 48px rgba(74, 222, 128, 0.25);
-      border-color: rgba(74, 222, 128, 0.7);
+      background: linear-gradient(135deg, rgba(37, 211, 102, 0.35), rgba(37, 211, 102, 0.15));
+      transform: translateY(-4px) scale(1.06);
+      box-shadow: 0 20px 60px rgba(74, 222, 128, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border-color: rgba(74, 222, 128, 0.8);
       color: #86efac;
     }
 
     .email-btn {
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(124, 58, 237, 0.1));
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.18), rgba(124, 58, 237, 0.12));
       color: #a5f3fc;
-      border-color: rgba(0, 212, 255, 0.4);
+      border-color: rgba(0, 212, 255, 0.5);
     }
 
     .email-btn:hover {
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(124, 58, 237, 0.2));
-      transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 16px 48px rgba(0, 212, 255, 0.25);
-      border-color: rgba(0, 212, 255, 0.7);
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.35), rgba(124, 58, 237, 0.25));
+      transform: translateY(-4px) scale(1.06);
+      box-shadow: 0 20px 60px rgba(0, 212, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border-color: rgba(0, 212, 255, 0.8);
       color: #cffafe;
     }
 
     .instagram-btn {
-      background: linear-gradient(135deg, rgba(225, 48, 108, 0.15), rgba(193, 53, 132, 0.1), rgba(245, 96, 64, 0.05));
+      background: linear-gradient(135deg, rgba(225, 48, 108, 0.18), rgba(193, 53, 132, 0.12), rgba(245, 96, 64, 0.08));
       color: #f9a8d4;
-      border-color: rgba(236, 72, 153, 0.4);
+      border-color: rgba(236, 72, 153, 0.5);
     }
 
     .instagram-btn:hover {
-      background: linear-gradient(135deg, rgba(225, 48, 108, 0.25), rgba(193, 53, 132, 0.15), rgba(245, 96, 64, 0.1));
-      transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 16px 48px rgba(236, 72, 153, 0.25);
-      border-color: rgba(236, 72, 153, 0.7);
+      background: linear-gradient(135deg, rgba(225, 48, 108, 0.3), rgba(193, 53, 132, 0.2), rgba(245, 96, 64, 0.12));
+      transform: translateY(-4px) scale(1.06);
+      box-shadow: 0 20px 60px rgba(236, 72, 153, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border-color: rgba(236, 72, 153, 0.8);
       color: #fbcfe8;
     }
 
@@ -905,12 +950,18 @@
     .fade-in-section {
       opacity: 0;
       transform: translateY(60px);
-      transition: opacity 1s ease, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .fade-in-section.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      body {
+        scroll-behavior: smooth;
+      }
     }
 
     /* ===== RESPONSIVE ===== */
@@ -923,6 +974,10 @@
 
       .hero-section {
         padding: 120px 24px 80px;
+      }
+
+      .hero-section h1 {
+        font-size: clamp(72px, 12vw, 120px);
       }
 
       section {
@@ -1021,7 +1076,7 @@
       <div class="systems-grid">
 
         <div class="system-card">
-          <div class="system-icon">&#128295;</div>
+          <img src="https://www.image2url.com/r2/default/images/1776652207782-856aa908-2f2a-438f-bb34-f0de591a62a9.png" class="system-icon product-image" alt="MEDUSA">
           <h3>MEDUSA</h3>
           <p>
             Controla quién entra, cuándo y cómo. Genera accesos únicos con códigos QR de una sola lectura, eliminando duplicidad y riesgos. Diseñado para eventos, espacios privados y experiencias donde el control no es opcional, es estratégico.
@@ -1038,15 +1093,6 @@
           <span class="btn-reveal locked-btn">Acceso restringido &#128274;</span>
         </div>
 
-        <div class="system-card locked">
-          <div class="lock-icon">&#128274;</div>
-          <h3>En Construcción</h3>
-          <p>
-            Nuevo ecosistema digital en fase de desarrollo avanzado. Pronto disponible para transformar tu operación.
-          </p>
-          <span class="btn-reveal locked-btn">Acceso restringido &#128274;</span>
-        </div>
-
       </div>
     </section>
 
@@ -1058,7 +1104,7 @@
       <div class="products-grid">
 
         <div class="product-card">
-          <div class="product-icon">🚀</div>
+          <img src="https://www.image2url.com/r2/default/images/1776651851290-d0128efe-6652-4891-a19f-e4297fef021e.png" class="product-icon product-image" alt="Kit Empresarial NFC">
           <h3>Kit Empresarial NFC</h3>
           <p>
             Solución integral de networking para empresas y profesionales. Comparte información de contacto, catálogos digitales, redes sociales y documentación comercial con un solo toque.
@@ -1067,7 +1113,7 @@
         </div>
 
         <div class="product-card">
-          <div class="product-icon">🔑</div>
+          <img src="https://www.image2url.com/r2/default/images/1776651923362-da08209f-1489-4c50-bfa4-04a29aaae2c0.png" class="product-icon product-image" alt="Llaveros NFC">
           <h3>Llaveros NFC</h3>
           <p>
             Tu identidad digital siempre contigo. Un accesorio elegante y funcional que almacena y transmite tu información al acercarlo a cualquier smartphone.
@@ -1076,7 +1122,7 @@
         </div>
 
         <div class="product-card">
-          <div class="product-icon">💳</div>
+          <img src="https://www.image2url.com/r2/default/images/1776651985303-0922f91b-3e14-482e-ab28-efd539fa3056.png" class="product-icon product-image" alt="MANALF Card NFC">
           <h3>MANALF Card NFC</h3>
           <p>
             La tarjeta de presentación del futuro. Sin aplicaciones, sin contactos perdidos. Un simple toque contra un teléfono y tu información queda guardada instantáneamente.
@@ -1085,7 +1131,7 @@
         </div>
 
         <div class="product-card">
-          <div class="product-icon">⌚</div>
+          <img src="https://www.image2url.com/r2/default/images/1776652076500-536acc27-021e-4ad9-8ab6-250642f99b75.png" class="product-icon product-image" alt="Pulsera Inteligente NFC">
           <h3>Pulsera Inteligente NFC</h3>
           <p>
             Identificador de emergencia diseñado para adultos mayores y personas con condiciones médicas. Almacena información vital, contactos de emergencia y alergias.
@@ -1094,10 +1140,19 @@
         </div>
 
         <div class="product-card">
-          <div class="product-icon">📡</div>
+          <img src="https://www.image2url.com/r2/default/images/1776652148642-e55104ad-f579-45de-959d-f25582b2f287.png" class="product-icon product-image" alt="Habladores NFC">
           <h3>Habladores NFC</h3>
           <p>
             Convierte cualquier espacio físico en un punto de interacción digital inteligente. Acceso instantáneo a menús, catálogos y redes sociales sin descargas.
+          </p>
+          <a href="https://wa.link/giwkbo" target="_blank" class="btn-reveal">Cotizar ahora &rarr;</a>
+        </div>
+
+        <div class="product-card">
+          <img src="https://www.image2url.com/r2/default/images/1776652207782-856aa908-2f2a-438f-bb34-f0de591a62a9.png" class="product-icon product-image" alt="Sistema Control de Acceso NFC">
+          <h3>Sistema Control de Acceso NFC</h3>
+          <p>
+            Tecnología de vanguardia para control de acceso sin contacto. Ideal para gimnasios, oficinas, eventos, museos. Combina seguridad, velocidad y experiencia de usuario.
           </p>
           <a href="https://wa.link/giwkbo" target="_blank" class="btn-reveal">Cotizar ahora &rarr;</a>
         </div>
@@ -1107,69 +1162,29 @@
 
     <div class="section-divider"></div>
 
-    <!-- SERVICIOS CALIFICADOS -->
+    <!-- SERVICIOS -->
     <section id="servicios" class="fade-in-section">
-      <h2 class="section-title">Servicios Calificados</h2>
+      <h2 class="section-title">Servicios Especializados</h2>
       <div class="services-grid">
 
         <div class="service-item">
-          <h3><span class="service-bullet"></span>Arquitectura Digital Personalizada</h3>
-          <p>Diseñamos la estructura completa de tu ecosistema digital para que cada parte cumpla una función clara dentro de tu crecimiento.</p>
+          <h3><span class="service-bullet"></span>Infraestructura a Medida</h3>
+          <p>Diseñamos y construimos sistemas digitales únicos, escalables y personalizados según tus necesidades específicas.</p>
         </div>
 
         <div class="service-item">
-          <h3><span class="service-bullet"></span>Software a Medida</h3>
-          <p>Creamos soluciones que no existen en el mercado, adaptadas exactamente a cómo funciona tu negocio, no al revés.</p>
+          <h3><span class="service-bullet"></span>Integración NFC Enterprise</h3>
+          <p>Implementamos soluciones NFC corporativas para optimizar procesos, mejorar seguridad y crear experiencias innovadoras.</p>
         </div>
 
         <div class="service-item">
-          <h3><span class="service-bullet"></span>Implementación Inteligente</h3>
-          <p>Activamos tu sistema listo para operar desde el primer momento, sin fricciones ni procesos innecesarios.</p>
+          <h3><span class="service-bullet"></span>Automatización Digital</h3>
+          <p>Transformamos procesos manuales en flujos automatizados inteligentes que ahorran tiempo, recursos y errores.</p>
         </div>
 
         <div class="service-item">
-          <h3><span class="service-bullet"></span>Soporte Evolutivo</h3>
-          <p>No solo mantenemos tu sistema, lo hacemos evolucionar contigo. Cada mejora responde a datos reales y uso real.</p>
-        </div>
-
-        <div class="service-item">
-          <h3><span class="service-bullet"></span>Activación de Equipo</h3>
-          <p>Tu equipo no solo usa el sistema, aprende a dominarlo para convertirlo en una herramienta de ventaja competitiva.</p>
-        </div>
-
-        <div class="service-item">
-          <h3><span class="service-bullet"></span>Optimización Continua</h3>
-          <p>Ajustamos cada detalle para mejorar rendimiento, eficiencia y resultados sin que tengas que detener tu operación.</p>
-        </div>
-
-        <div class="service-item">
-          <h3><span class="service-bullet"></span>Automatización con IA</h3>
-          <p>Bots inteligentes que entienden tu negocio, responden por ti y convierten conversaciones en oportunidades constantes.</p>
-        </div>
-
-        <div class="service-item">
-          <h3><span class="service-bullet"></span>Digitalización de Información</h3>
-          <p>Transformamos datos dispersos en estructuras organizadas. Incluye formularios inteligentes conectados a bases de datos en tiempo real.</p>
-        </div>
-
-        <div class="service-item">
-          <h3><span class="service-bullet"></span>Experiencia Digital</h3>
-          <p>Diseñamos interfaces que guían, conectan y generan acción sin esfuerzo. Incluye identidad digital premium y presencia profesional unificada.</p>
-        </div>
-
-        <div class="service-item">
-          <h3><span class="service-bullet"></span>Experiencias Tecnológicas</h3>
-          <p>Diseñamos experiencias que combinan tecnología y percepción para generar impacto, recuerdos y conexión real en eventos e instalaciones.</p>
-        </div>
-
-        <div class="service-item">
-          <h3><span class="service-bullet"></span>Integración de Sistemas</h3>
-          <p>Conectamos tus plataformas actuales en un ecosistema unificado donde la información fluye automáticamente entre todos tus canales.</p>
-        </div>
-
-        <div class="service-item">
-          <h3><span class="service-bullet"></span>Consultoría Estratégica</h3>
-          <p>Analizamos tu operación actual y diseñamos la hoja de ruta tecnológica para llevar tu negocio al siguiente nivel con control total.</p>
+          <h3><span class="service-bullet"></span>Consultoría Tecnológica</h3>
+          <p>Asesoramiento experto para implementar tecnología que realmente funcione y genere valor en tu operación.</p>
         </div>
 
       </div>
@@ -1177,149 +1192,78 @@
 
     <div class="section-divider"></div>
 
-    <!-- CONTACTO REDISEÑADO -->
-    <section class="contact-section fade-in-section" id="contacto">
-      <h2 class="section-title">Contacto</h2>
+    <!-- CONTACTO -->
+    <section id="contacto" class="contact-section fade-in-section">
       <div class="contact-wrapper">
-        <p class="contact-message">
-          Cuéntanos qué quieres construir.<br>
-          Si es posible imaginarlo, es posible estructurarlo.<br>
-          Nosotros nos encargamos de convertirlo en un sistema real.
-        </p>
-
+        <h2 class="section-title">¿Listo para transformar?</h2>
+        <div class="contact-message">
+          Conectemos y hagamos realidad tu infraestructura digital inteligente
+        </div>
         <div class="contact-buttons">
           <a href="https://wa.link/giwkbo" target="_blank" class="contact-btn whatsapp-btn">
-            <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-            </svg>
-            WhatsApp
+            💬 WhatsApp
           </a>
-          
-          <a href="mailto:manalfnfc@gmail.com" class="contact-btn email-btn">
-            <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-            </svg>
-            Email
+          <a href="mailto:contacto@manalf.com" class="contact-btn email-btn">
+            ✉️ Email
           </a>
-          
-          <a href="https://www.instagram.com/manalf_tech/" target="_blank" class="contact-btn instagram-btn">
-            <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-            </svg>
-            Instagram
+          <a href="https://instagram.com" target="_blank" class="contact-btn instagram-btn">
+            📸 Instagram
           </a>
         </div>
-
         <p class="contact-tagline">
-          No todos necesitan esto.<br>
-          Solo quienes entienden el valor del control digital.
+          Infraestructuras digitales inteligentes que generan valor real
         </p>
       </div>
     </section>
 
     <footer class="footer">
-      <p>&copy; 2026 MANALF. Todos los derechos reservados.</p>
+      <p>&copy; 2024 MANALF - Infraestructuras Digitales. Todos los derechos reservados.</p>
     </footer>
 
   </div>
 
   <script>
-    /* ===== AUDIO MODERNO SYNTHWAVE ===== */
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    let audioCtx;
+    /* ===== AUDIO CONTEXT ===== */
+    let audioContext;
 
     function initAudio() {
-      if (!audioCtx) audioCtx = new AudioContext();
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
     }
 
     function playActivationTone() {
-      if (!audioCtx) return;
-      const t = audioCtx.currentTime;
-      
-      // Bass drop
-      const osc1 = audioCtx.createOscillator();
-      const gain1 = audioCtx.createGain();
-      const filter1 = audioCtx.createBiquadFilter();
-      
-      osc1.connect(filter1);
-      filter1.connect(gain1);
-      gain1.connect(audioCtx.destination);
-      
-      osc1.type = 'sawtooth';
-      filter1.type = 'lowpass';
-      filter1.frequency.setValueAtTime(200, t);
-      filter1.frequency.exponentialRampToValueAtTime(2000, t + 0.4);
-      
-      osc1.frequency.setValueAtTime(55, t);
-      osc1.frequency.exponentialRampToValueAtTime(220, t + 0.3);
-      
-      gain1.gain.setValueAtTime(0.15, t);
-      gain1.gain.exponentialRampToValueAtTime(0.01, t + 0.6);
-      
-      osc1.start(t);
-      osc1.stop(t + 0.6);
-      
-      // High shimmer
-      const osc2 = audioCtx.createOscillator();
-      const gain2 = audioCtx.createGain();
-      osc2.connect(gain2);
-      gain2.connect(audioCtx.destination);
-      
-      osc2.type = 'sine';
-      osc2.frequency.setValueAtTime(880, t);
-      osc2.frequency.exponentialRampToValueAtTime(3520, t + 0.5);
-      
-      gain2.gain.setValueAtTime(0.05, t);
-      gain2.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
-      
-      osc2.start(t);
-      osc2.stop(t + 0.5);
+      if (!audioContext) return;
+      const now = audioContext.currentTime;
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+      osc.frequency.setValueAtTime(800, now);
+      osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+      osc.start(now);
+      osc.stop(now + 0.1);
     }
 
     function playCompleteTone() {
-      if (!audioCtx) return;
-      const t = audioCtx.currentTime;
-      
-      // Arpegio ascendente moderno
-      const notes = [440, 554, 659, 880, 1109, 1319];
-      notes.forEach((freq, i) => {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        const filter = audioCtx.createBiquadFilter();
-        
-        osc.connect(filter);
-        filter.connect(gain);
-        gain.connect(audioCtx.destination);
-        
-        osc.type = i % 2 === 0 ? 'sine' : 'triangle';
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(freq * 2, t + i * 0.08);
-        
-        osc.frequency.setValueAtTime(freq, t + i * 0.08);
-        
-        gain.gain.setValueAtTime(0.08, t + i * 0.08);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.08 + 0.4);
-        
-        osc.start(t + i * 0.08);
-        osc.stop(t + i * 0.08 + 0.4);
-      });
-      
-      // Sub bass
-      const subOsc = audioCtx.createOscillator();
-      const subGain = audioCtx.createGain();
-      subOsc.connect(subGain);
-      subGain.connect(audioCtx.destination);
-      
-      subOsc.type = 'sine';
-      subOsc.frequency.setValueAtTime(55, t);
-      subGain.gain.setValueAtTime(0.2, t);
-      subGain.gain.exponentialRampToValueAtTime(0.01, t + 1);
-      
-      subOsc.start(t);
-      subOsc.stop(t + 1);
+      if (!audioContext) return;
+      const now = audioContext.currentTime;
+      for (let i = 0; i < 3; i++) {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.frequency.setValueAtTime(600 + i * 200, now + i * 0.1);
+        gain.gain.setValueAtTime(0.2, now + i * 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.1 + 0.1);
+        osc.start(now + i * 0.1);
+        osc.stop(now + i * 0.1 + 0.1);
+      }
     }
 
-    /* ===== PARTICULAS DE BIENVENIDA MÁS RÁPIDAS Y AMPLIAS ===== */
+    /* ===== PARTICULAS BIENVENIDA ===== */
     const welcomeCanvas = document.getElementById('welcomeParticles');
     const wCtx = welcomeCanvas.getContext('2d');
     let welcomeParticles = [];
@@ -1334,38 +1278,28 @@
 
     class WelcomeParticle {
       constructor() {
-        this.reset();
-      }
-      reset() {
         this.x = Math.random() * welcomeCanvas.width;
         this.y = Math.random() * welcomeCanvas.height;
-        // Velocidad aumentada (0.8 a 2.0)
-        this.vx = (Math.random() - 0.5) * 2.0;
-        this.vy = (Math.random() - 0.5) * 2.0;
-        this.size = Math.random() * 4 + 1;
-        this.alpha = Math.random() * 0.6 + 0.2;
-        this.glow = Math.random() * 30 + 15;
-        // Movimiento más amplio
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = (Math.random() - 0.5) * 0.6;
+        this.size = Math.random() * 3 + 1;
+        this.alpha = Math.random() * 0.4 + 0.1;
         this.angle = Math.random() * Math.PI * 2;
-        this.amplitude = Math.random() * 100 + 50;
+        this.glow = Math.random() * 10 + 5;
       }
       update() {
-        // Movimiento base más rápido
         this.x += this.vx;
         this.y += this.vy;
         
-        // Movimiento ondulatorio amplio
         this.angle += 0.02;
         this.x += Math.sin(this.angle) * 0.5;
         this.y += Math.cos(this.angle) * 0.5;
         
-        // Rebote en bordes con margen amplio
         if (this.x < -50) this.x = welcomeCanvas.width + 50;
         if (this.x > welcomeCanvas.width + 50) this.x = -50;
         if (this.y < -50) this.y = welcomeCanvas.height + 50;
         if (this.y > welcomeCanvas.height + 50) this.y = -50;
         
-        // Interacción con mouse más amplia
         const dx = this.x - mouseX;
         const dy = this.y - mouseY;
         const dist = Math.sqrt(dx*dx + dy*dy);
@@ -1386,7 +1320,6 @@
       }
     }
 
-    // Más partículas (120)
     for (let i = 0; i < 120; i++) welcomeParticles.push(new WelcomeParticle());
 
     function drawWelcomeConnections() {
@@ -1395,7 +1328,6 @@
           const dx = welcomeParticles[i].x - welcomeParticles[j].x;
           const dy = welcomeParticles[i].y - welcomeParticles[j].y;
           const dist = Math.sqrt(dx*dx + dy*dy);
-          // Conexiones más amplias (150px)
           if (dist < 150) {
             wCtx.beginPath();
             wCtx.moveTo(welcomeParticles[i].x, welcomeParticles[i].y);
@@ -1572,7 +1504,6 @@
 
     /* ===== ANIMACIONES SCROLL INMERSIVAS ===== */
     function animateOnScroll() {
-      // Observer para cards
       const cardObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -1589,7 +1520,6 @@
         cardObserver.observe(el);
       });
 
-      // Observer para secciones completas (fade in)
       const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
