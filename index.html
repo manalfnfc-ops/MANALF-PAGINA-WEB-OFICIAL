@@ -47,6 +47,7 @@
       object-fit: cover;
       z-index: 0;
       transition: opacity 1s ease;
+      background: url('https://www.image2url.com/r2/default/images/1776654166754-2d78f73d-183b-4795-8205-baf737144068.blob') center/cover no-repeat;
     }
 
     #overlayContrast {
@@ -592,6 +593,74 @@
       object-fit: contain;
       margin: 0 auto 24px;
       filter: drop-shadow(0 8px 24px rgba(0, 212, 255, 0.3));
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .product-image:hover {
+      filter: drop-shadow(0 8px 32px rgba(0, 212, 255, 0.6));
+    }
+
+    /* ===== MODAL IMAGEN ===== */
+    .image-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .image-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .image-modal-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .image-modal-img {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .image-modal-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 32px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .image-modal-close:hover {
+      transform: rotate(90deg);
+    }
+
+    @media (max-width: 768px) {
+      .image-modal-close {
+        top: 10px;
+        right: 10px;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+      }
     }
 
     .system-card:hover .system-icon,
@@ -1020,8 +1089,16 @@
 </head>
 <body>
 
+  <!-- Modal para imágenes de productos -->
+  <div class="image-modal" id="imageModal">
+    <div class="image-modal-content">
+      <button class="image-modal-close" id="closeModal">&times;</button>
+      <img id="modalImage" class="image-modal-img" alt="">
+    </div>
+  </div>
+
   <!-- Fondo inicial visible -->
-  <img id="initBg" src="https://www.image2url.com/r2/default/images/1776506071031-a6408ea8-68c2-40ae-b7be-773bb71eab75.jpg" alt="">
+  <img id="initBg" src="" alt="">
 
   <!-- Overlay de contraste -->
   <div id="overlayContrast"></div>
@@ -1201,13 +1278,16 @@
         </div>
         <div class="contact-buttons">
           <a href="https://wa.link/giwkbo" target="_blank" class="contact-btn whatsapp-btn">
-            💬 WhatsApp
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.171l-.346.2-3.57-.935 1.006 3.282-.214.338a9.466 9.466 0 00-1.441 5.385c0 5.255 4.334 9.576 9.577 9.576 2.555 0 4.962-.997 6.763-2.645l.34-.265 3.582.883-1.02-3.323.202-.326a9.523 9.523 0 001.463-5.403c0-5.255-4.335-9.577-9.577-9.577"/></svg>
+            WhatsApp
           </a>
           <a href="mailto:contacto@manalf.com" class="contact-btn email-btn">
-            ✉️ Email
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            Email
           </a>
-          <a href="https://instagram.com" target="_blank" class="contact-btn instagram-btn">
-            📸 Instagram
+          <a href="https://instagram.com/manalf.oficial" target="_blank" class="contact-btn instagram-btn">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.265-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.322a1.44 1.44 0 1012.877.001 1.44 1.44 0 00-1.44-1.44z"/></svg>
+            Instagram
           </a>
         </div>
         <p class="contact-tagline">
@@ -1282,31 +1362,45 @@
         this.y = Math.random() * welcomeCanvas.height;
         this.vx = (Math.random() - 0.5) * 0.6;
         this.vy = (Math.random() - 0.5) * 0.6;
-        this.size = Math.random() * 3 + 1;
-        this.alpha = Math.random() * 0.4 + 0.1;
+        this.size = Math.random() * 8 + 5;
+        this.alpha = Math.random() * 0.4 + 0.2;
         this.angle = Math.random() * Math.PI * 2;
-        this.glow = Math.random() * 10 + 5;
+        this.glow = Math.random() * 20 + 15;
+        this.targetX = null;
+        this.targetY = null;
       }
       update() {
-        this.x += this.vx;
-        this.y += this.vy;
+        const enterBtn = document.getElementById('enterBtn');
+        if (enterBtn && !document.getElementById('blurOverlay').classList.contains('hidden')) {
+          const rect = enterBtn.getBoundingClientRect();
+          this.targetX = rect.left + rect.width / 2;
+          this.targetY = rect.top + rect.height / 2;
+          
+          const dx = this.targetX - this.x;
+          const dy = this.targetY - this.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          
+          if (dist > 10) {
+            this.vx += dx / dist * 0.12;
+            this.vy += dy / dist * 0.12;
+          }
+        }
         
-        this.angle += 0.02;
-        this.x += Math.sin(this.angle) * 0.5;
-        this.y += Math.cos(this.angle) * 0.5;
+        this.x += this.vx * 0.8;
+        this.y += this.vy * 0.8;
+        this.vx *= 0.95;
+        this.vy *= 0.95;
         
         if (this.x < -50) this.x = welcomeCanvas.width + 50;
         if (this.x > welcomeCanvas.width + 50) this.x = -50;
         if (this.y < -50) this.y = welcomeCanvas.height + 50;
         if (this.y > welcomeCanvas.height + 50) this.y = -50;
         
-        const dx = this.x - mouseX;
-        const dy = this.y - mouseY;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < 200) {
-          const force = (200 - dist) / 200;
-          this.x += dx * force * 0.05;
-          this.y += dy * force * 0.05;
+        const mouseDist = Math.sqrt((this.x - mouseX)**2 + (this.y - mouseY)**2);
+        if (mouseDist < 180 && !this.targetX) {
+          const force = (180 - mouseDist) / 180;
+          this.x += (this.x - mouseX) * force * 0.04;
+          this.y += (this.y - mouseY) * force * 0.04;
         }
       }
       draw() {
@@ -1314,13 +1408,13 @@
         wCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         wCtx.fillStyle = `rgba(167, 139, 250, ${this.alpha})`;
         wCtx.shadowBlur = this.glow;
-        wCtx.shadowColor = 'rgba(139, 92, 246, 0.9)';
+        wCtx.shadowColor = 'rgba(139, 92, 246, 0.95)';
         wCtx.fill();
         wCtx.shadowBlur = 0;
       }
     }
 
-    for (let i = 0; i < 120; i++) welcomeParticles.push(new WelcomeParticle());
+    for (let i = 0; i < 50; i++) welcomeParticles.push(new WelcomeParticle());
 
     function drawWelcomeConnections() {
       for (let i = 0; i < welcomeParticles.length; i++) {
@@ -1562,6 +1656,38 @@
           ticking = false;
         });
         ticking = true;
+      }
+    });
+
+    /* ===== MODAL IMAGENES PRODUCTOS ===== */
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const closeModal = document.getElementById('closeModal');
+
+    document.querySelectorAll('.product-image').forEach(img => {
+      img.addEventListener('click', () => {
+        modalImage.src = img.src;
+        imageModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    closeModal.addEventListener('click', () => {
+      imageModal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    });
+
+    imageModal.addEventListener('click', (e) => {
+      if (e.target === imageModal) {
+        imageModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+        imageModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
       }
     });
   </script>
