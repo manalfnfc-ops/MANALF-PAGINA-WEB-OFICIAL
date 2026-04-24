@@ -142,9 +142,10 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center center;
       z-index: 0;
       transition: opacity 1s ease;
-      background: url('https://www.image2url.com/r2/default/images/1776654166754-2d78f73d-183b-4795-8205-baf737144068.blob') center/cover no-repeat;
+      background: url('https://www.image2url.com/r2/default/images/1777054898909-05436086-7c41-4102-8922-ca4b2378dc84.jpeg') center/cover no-repeat;
     }
 
     #overlayContrast {
@@ -1089,6 +1090,56 @@
       z-index: 10;
     }
 
+    /* ===== NEXUS SECTION ===== */
+    .nexus-intro {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 72px;
+    }
+
+    .nexus-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 20px;
+      border-radius: 50px;
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      background: rgba(0, 212, 255, 0.06);
+      color: var(--azul-neon);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .nexus-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--azul-neon);
+      box-shadow: 0 0 8px var(--azul-neon);
+      animation: blink-dot 1.8s ease-in-out infinite;
+    }
+
+    @keyframes blink-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    .nexus-intro p {
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 1.05rem;
+      line-height: 1.9;
+    }
+
+    .nexus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
     /* ===== SEO CONTENT BLOCK ===== */
     .seo-content-block {
       max-width: 1200px;
@@ -1219,7 +1270,7 @@
   </div>
 
   <!-- Fondo inicial visible -->
-  <img id="initBg" src="" alt="MANALF tecnología NFC Colombia" loading="eager">
+  <img id="initBg" src="https://www.image2url.com/r2/default/images/1777054898909-05436086-7c41-4102-8922-ca4b2378dc84.jpeg" alt="MANALF tecnología NFC Colombia" loading="eager">
 
   <!-- Overlay de contraste -->
   <div id="overlayContrast" aria-hidden="true"></div>
@@ -1254,6 +1305,7 @@
       <a href="#sistemas">Sistemas</a>
       <a href="#productos">Productos</a>
       <a href="#servicios">Servicios</a>
+      <a href="#nexus">NEXUS</a>
       <a href="#contacto">Contacto</a>
     </nav>
 
@@ -1416,6 +1468,59 @@
         </p>
       </div>
     </section>
+
+    <!-- NEXUS: DESARROLLOS FINALIZADOS -->
+    <div class="section-divider"></div>
+
+    <section id="nexus" class="fade-in-section" aria-labelledby="nexus-titulo">
+      <div class="nexus-intro">
+        <div class="nexus-badge">Archivo de Operaciones</div>
+        <h2 class="section-title" id="nexus-titulo">NEXUS — Desarrollos Completados</h2>
+        <p>
+          Cada proyecto en NEXUS es la huella digital de una transformación real. Ecosistemas completos construidos junto a clientes que decidieron dejar de imaginar y empezar a operar. Soluciones únicas, arquitecturas a medida, resultados medibles.
+        </p>
+      </div>
+      <div class="nexus-grid">
+
+        <div class="system-card locked">
+          <div class="lock-icon" aria-hidden="true">&#128274;</div>
+          <h3>Proyecto Clasificado</h3>
+          <p>Sistema digital completo desarrollado para cliente en Colombia. Detalles bajo acuerdo de confidencialidad.</p>
+          <span class="btn-reveal locked-btn">Acceso restringido &#128274;</span>
+        </div>
+
+        <div class="system-card locked">
+          <div class="lock-icon" aria-hidden="true">&#128274;</div>
+          <h3>Proyecto Clasificado</h3>
+          <p>Ecosistema automatizado con IA implementado para empresa del sector servicios. Resultados en producción activa.</p>
+          <span class="btn-reveal locked-btn">Acceso restringido &#128274;</span>
+        </div>
+
+        <div class="system-card locked">
+          <div class="lock-icon" aria-hidden="true">&#128274;</div>
+          <h3>Proyecto Clasificado</h3>
+          <p>Plataforma NFC de gestión de clientes para negocio local. Integración total con procesos físicos y digitales.</p>
+          <span class="btn-reveal locked-btn">Acceso restringido &#128274;</span>
+        </div>
+
+        <div class="system-card locked">
+          <div class="lock-icon" aria-hidden="true">&#128274;</div>
+          <h3>Proyecto Clasificado</h3>
+          <p>Software a medida con panel de control 3D para empresa del sector gastronómico. Experiencia de usuario inmersiva.</p>
+          <span class="btn-reveal locked-btn">Acceso restringido &#128274;</span>
+        </div>
+
+        <div class="system-card locked">
+          <div class="lock-icon" aria-hidden="true">&#128274;</div>
+          <h3>Proyecto Clasificado</h3>
+          <p>Infraestructura digital inteligente desplegada en múltiples ciudades de Colombia. Arquitectura escalable en operación.</p>
+          <span class="btn-reveal locked-btn">Acceso restringido &#128274;</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- NEXUS: DESARROLLOS FINALIZADOS -->
 
     <!-- BLOQUE SEO LOCAL Y SEMÁNTICO -->
     <div class="seo-content-block" aria-label="Información sobre cobertura y servicios">
