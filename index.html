@@ -1257,6 +1257,169 @@
         transition-duration: 0.01ms !important;
       }
     }
+  
+
+    /* ===== CHAT BUBBLE ===== */
+    .chat-bubble {
+      position: fixed; bottom: 24px; left: 24px;
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.9), rgba(0, 212, 255, 0.9));
+      border: 1px solid rgba(167, 139, 250, 0.5);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      cursor: pointer; z-index: 5000;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 30px rgba(124, 58, 237, 0.5), 0 0 60px rgba(0, 212, 255, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: chat-glow 3s ease-in-out infinite;
+    }
+    .chat-bubble:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 40px rgba(124, 58, 237, 0.7), 0 0 80px rgba(0, 212, 255, 0.3), 0 12px 40px rgba(0, 0, 0, 0.5);
+    }
+    .chat-bubble svg { width: 28px; height: 28px; fill: #fff; filter: drop-shadow(0 0 8px rgba(255,255,255,0.5)); }
+    .chat-bubble-label {
+      position: absolute; bottom: 76px; left: 50%;
+      white-space: nowrap;
+      background: rgba(15, 10, 30, 0.9);
+      border: 1px solid rgba(167, 139, 250, 0.4);
+      color: var(--uva-light); font-size: 12px; font-weight: 600;
+      padding: 6px 14px; border-radius: 20px;
+      backdrop-filter: blur(12px); pointer-events: none;
+      opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;
+      transform: translateX(-50%) translateY(8px); letter-spacing: 0.5px;
+    }
+    .chat-bubble:hover .chat-bubble-label { opacity: 1; transform: translateX(-50%) translateY(0); }
+    @keyframes chat-glow {
+      0%, 100% { box-shadow: 0 0 30px rgba(124, 58, 237, 0.5), 0 0 60px rgba(0, 212, 255, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4); }
+      50% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.7), 0 0 80px rgba(0, 212, 255, 0.35), 0 8px 32px rgba(0, 0, 0, 0.4); }
+    }
+
+    /* ===== CHAT INTERFACE ===== */
+    .chat-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+      z-index: 4999; opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .chat-overlay.active { opacity: 1; visibility: visible; }
+    .chat-container {
+      position: fixed; bottom: 100px; left: 24px;
+      width: 360px; max-width: calc(100vw - 48px); max-height: 70vh;
+      background: rgba(15, 10, 30, 0.95);
+      border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 24px;
+      z-index: 5001; display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(124, 58, 237, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      opacity: 0; transform: translateY(20px) scale(0.95);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+    .chat-container.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+    .chat-header {
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(0, 212, 255, 0.15));
+      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .chat-header-info { display: flex; align-items: center; gap: 10px; }
+    .chat-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--uva-main), var(--azul-neon));
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+      box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
+    }
+    .chat-header-text { display: flex; flex-direction: column; }
+    .chat-header-title { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: 0.3px; }
+    .chat-header-status {
+      font-size: 11px; color: var(--azul-neon);
+      display: flex; align-items: center; gap: 4px;
+    }
+    .chat-header-status::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--azul-neon); box-shadow: 0 0 6px var(--azul-neon);
+      animation: blink-dot 2s ease-in-out infinite;
+    }
+    .chat-close {
+      background: none; border: none; color: rgba(255, 255, 255, 0.6);
+      font-size: 22px; cursor: pointer; transition: all 0.3s ease;
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+    }
+    .chat-close:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 16px;
+      display: flex; flex-direction: column; gap: 12px;
+      min-height: 200px; max-height: 400px;
+    }
+    .chat-message {
+      max-width: 85%; padding: 12px 16px; border-radius: 18px;
+      font-size: 13px; line-height: 1.6;
+      animation: msg-in 0.3s ease; word-wrap: break-word;
+    }
+    @keyframes msg-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .chat-message.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.5), rgba(0, 212, 255, 0.3));
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      color: #fff; border-bottom-right-radius: 4px;
+    }
+    .chat-message.bot {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      color: rgba(255, 255, 255, 0.9); border-bottom-left-radius: 4px;
+    }
+    .chat-message.bot strong { color: var(--uva-light); font-weight: 600; }
+    .chat-input-area {
+      padding: 12px 16px 16px;
+      border-top: 1px solid rgba(139, 92, 246, 0.15);
+      display: flex; gap: 10px; flex-shrink: 0;
+    }
+    .chat-input {
+      flex: 1; background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 20px;
+      padding: 10px 16px; color: #fff; font-size: 13px;
+      font-family: inherit; outline: none; transition: all 0.3s ease;
+    }
+    .chat-input::placeholder { color: rgba(255, 255, 255, 0.35); }
+    .chat-input:focus {
+      border-color: rgba(0, 212, 255, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.15);
+    }
+    .chat-send {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--uva-main), var(--azul-neon));
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease; flex-shrink: 0;
+      box-shadow: 0 0 16px rgba(124, 58, 237, 0.4);
+    }
+    .chat-send:hover { transform: scale(1.1); box-shadow: 0 0 24px rgba(124, 58, 237, 0.6); }
+    .chat-send svg { width: 18px; height: 18px; fill: #fff; }
+    .chat-send:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .chat-typing { display: flex; gap: 4px; padding: 10px 14px; align-self: flex-start; }
+    .chat-typing span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--uva-light); animation: typing-bounce 1.4s ease-in-out infinite;
+    }
+    .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing-bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+    @media (max-width: 480px) {
+      .chat-container { left: 12px; right: 12px; width: auto; bottom: 90px; }
+      .chat-bubble { bottom: 16px; left: 16px; width: 56px; height: 56px; }
+      .chat-bubble svg { width: 24px; height: 24px; }
+    }
+</style>
+<base target="_blank">
+</head>
+<body>
 
   <!-- Modal para imágenes de productos -->
   <div class="image-modal" id="imageModal" role="dialog" aria-modal="true" aria-label="Imagen del producto">
@@ -1317,9 +1480,6 @@
         Creamos sistemas que transforman cómo las personas interactúan con negocios, espacios y experiencias.
         Tecnología NFC, automatización con IA y software a medida para hacer todo más simple, rápido y memorable.
       </p>
-      <a href="https://radar-de-leads-manalf.vercel.app/" target="_blank" rel="noopener noreferrer" class="hero-cta" style="margin-bottom: 16px; background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(124, 58, 237, 0.25)); border-color: rgba(0, 212, 255, 0.5);">
-  ⚡ Haz click aquí para unirte
-</a>
       <a href="#sistemas" class="hero-cta">Explorar ecosistemas &rarr;</a>
     </section>
 
@@ -2083,4 +2243,180 @@
     });
   </script>
 
-   
+    /* ===== CHAT INTERFACE ===== */
+    const chatBubble = document.getElementById('chatBubble');
+    const chatOverlay = document.getElementById('chatOverlay');
+    const chatContainer = document.getElementById('chatContainer');
+    const chatClose = document.getElementById('chatClose');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+
+    let chatOpen = false;
+    let chatHistory = [];
+
+    const SYSTEM_PROMPT = `Eres el asistente virtual de MANALF, una empresa colombiana de infraestructura digital inteligente. Tu trabajo es ayudar a los visitantes del sitio web a entender qué necesitan y recomendarles la solución MANALF adecuada.
+
+Servicios y productos de MANALF:
+1. Ecosistema Turístico Digital: hoteles, agencias de viaje, gastronomía, sistema MEDUSA (control de accesos QR).
+2. Ecosistema Empresarial: identidad digital NFC, catálogos digitales, automatización con IA, software a medida.
+3. Ecosistema de Entretenimiento y Eventos: accesos VIP, gestión de eventos, bots inteligentes.
+4. Tecnología NFC: tarjetas, llaveros, pulseras SOS, habladores para reseñas Google — todo sin apps.
+
+Reglas:
+- Sé conciso, amable y profesional.
+- Habla en español.
+- Pregunta qué necesita el usuario y recomienda la solución MANALF que mejor se adapte.
+- No inventes precios ni detalles técnicos que no conozcas.
+- Si el usuario quiere cotizar, dirígelo al WhatsApp o email de MANALF.
+- Mantén conversaciones naturales y fluidas.`;
+
+    function openChat() {
+      chatOpen = true;
+      chatOverlay.classList.add('active');
+      chatContainer.classList.add('active');
+      chatInput.focus();
+      if (chatMessages.children.length === 0) {
+        addBotMessage('¡Hola! Soy el asistente de MANALF. ¿En qué puedo ayudarte hoy? Cuéntame sobre tu negocio o proyecto y te recomendaré la mejor solución.');
+      }
+    }
+
+    function closeChat() {
+      chatOpen = false;
+      chatOverlay.classList.remove('active');
+      chatContainer.classList.remove('active');
+    }
+
+    chatBubble.addEventListener('click', openChat);
+    chatBubble.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') openChat();
+    });
+    chatClose.addEventListener('click', closeChat);
+    chatOverlay.addEventListener('click', closeChat);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && chatOpen) closeChat();
+    });
+
+    function addMessage(text, type) {
+      const div = document.createElement('div');
+      div.className = `chat-message ${type}`;
+      div.innerHTML = text;
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function addUserMessage(text) {
+      addMessage(text, 'user');
+      chatHistory.push({ role: 'user', content: text });
+    }
+
+    function addBotMessage(text) {
+      addMessage(text, 'bot');
+      chatHistory.push({ role: 'assistant', content: text });
+    }
+
+    function showTyping() {
+      const div = document.createElement('div');
+      div.className = 'chat-typing';
+      div.id = 'chatTyping';
+      div.innerHTML = '<span></span><span></span><span></span>';
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function hideTyping() {
+      const typing = document.getElementById('chatTyping');
+      if (typing) typing.remove();
+    }
+
+    async function sendToAI(userMessage) {
+      chatSend.disabled = true;
+      showTyping();
+
+      const messages = [
+        { role: 'system', content: SYSTEM_PROMPT },
+        ...chatHistory.slice(-10),
+        { role: 'user', content: userMessage }
+      ];
+
+      try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + (window.MANALF_OPENAI_KEY || '')
+          },
+          body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: messages,
+            temperature: 0.7,
+            max_tokens: 500
+          })
+        });
+
+        hideTyping();
+
+        if (!response.ok) {
+          addBotMessage('Lo siento, estoy teniendo problemas de conexión. Puedes escribirnos directamente por WhatsApp o email y te atenderemos personalmente.');
+          chatSend.disabled = false;
+          return;
+        }
+
+        const data = await response.json();
+        const reply = data.choices?.[0]?.message?.content || 'Lo siento, no pude procesar tu mensaje. Intenta de nuevo.';
+        addBotMessage(reply);
+      } catch (err) {
+        hideTyping();
+        addBotMessage('Parece que hay un problema de conexión. Escríbenos por WhatsApp al enlace de contacto y te ayudamos de inmediato.');
+        console.error('Chat error:', err);
+      }
+      chatSend.disabled = false;
+      chatInput.focus();
+    }
+
+    function handleSend() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      addUserMessage(text);
+      chatInput.value = '';
+      sendToAI(text);
+    }
+
+    chatSend.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleSend();
+    });
+
+
+
+  <!-- ===== CHAT BUBBLE ===== -->
+  <div class="chat-bubble" id="chatBubble" role="button" aria-label="Abrir chat con asistente MANALF" tabindex="0">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/><path d="M7 9h10v2H7zm0-3h10v2H7z"/></svg>
+    <span class="chat-bubble-label">Ven hablemos...</span>
+  </div>
+
+  <!-- ===== CHAT OVERLAY ===== -->
+  <div class="chat-overlay" id="chatOverlay"></div>
+
+  <!-- ===== CHAT CONTAINER ===== -->
+  <div class="chat-container" id="chatContainer" role="dialog" aria-label="Chat con asistente MANALF">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-avatar">&#129302;</div>
+        <div class="chat-header-text">
+          <span class="chat-header-title">Asistente MANALF</span>
+          <span class="chat-header-status">En línea</span>
+        </div>
+      </div>
+      <button class="chat-close" id="chatClose" aria-label="Cerrar chat">&times;</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-area">
+      <input type="text" class="chat-input" id="chatInput" placeholder="Escribe tu mensaje..." aria-label="Mensaje" autocomplete="off">
+      <button class="chat-send" id="chatSend" aria-label="Enviar mensaje">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+</body>
+</html>
