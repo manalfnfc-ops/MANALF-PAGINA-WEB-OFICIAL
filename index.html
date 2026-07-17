@@ -453,18 +453,67 @@
     }
 
     .hero-section p.hero-subtitle {
-      font-size: clamp(19px, 2.6vw, 27px);
+      font-size: clamp(17px, 2.2vw, 22px);
       font-weight: 700;
-      color: #1e0a3c;
-      background: rgba(245, 240, 255, 0.88);
-      padding: 10px 22px;
-      border-radius: 14px;
+      color: #f5f0ff;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 14px 28px;
+      border-radius: 50px;
       display: inline-block;
       max-width: 680px;
-      margin-bottom: 20px;
+      margin-bottom: 32px;
       line-height: 1.5;
-      text-shadow: none;
-      box-shadow: 0 8px 32px rgba(76, 29, 149, 0.25);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-explainer {
+      font-size: clamp(15px, 1.8vw, 18px);
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 720px;
+      line-height: 1.8;
+      margin: 0 auto 32px;
+      text-align: center;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-showcase-card {
+      display: block;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 28px 32px;
+      border-radius: 20px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .video-showcase-card:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(-2px);
+    }
+
+    .video-showcase-title {
+      display: block;
+      font-size: clamp(18px, 2.4vw, 24px);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .video-showcase-cta {
+      display: inline-block;
+      color: var(--azul-neon);
+      font-weight: 600;
+      font-size: 15px;
     }
 
     .hero-section p:last-of-type {
@@ -1155,11 +1204,19 @@
     }
 
     .nexus-intro p {
-      color: #7dd3fc;
-      font-size: 1.1rem;
-      font-weight: 500;
-      line-height: 1.9;
-      text-shadow: 0 2px 10px rgba(0, 212, 255, 0.35), 0 1px 0 rgba(0, 0, 0, 0.4);
+      display: inline-block;
+      color: #0a0a0a;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.5;
+      -webkit-text-stroke: 0.4px rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
     .nexus-grid {
@@ -1348,15 +1405,25 @@
     <section class="hero-section" aria-label="Inicio">
       <h1>MANALF</h1>
       <p class="hero-subtitle">
-        Tu negocio pierde clientes por procesos lentos y desconectados. Nosotros construimos la infraestructura digital que lo resuelve.
-      </p>
-      <p>
-        Diseñamos sistemas con NFC, inteligencia artificial y software a medida que conectan cada punto de contacto de tu empresa, para que vendas más, automatices lo repetitivo y tus clientes vivan una experiencia memorable desde el primer toque.
+        Tu negocio pierde clientes por procesos lentos. Construimos la infraestructura digital que lo resuelve.
       </p>
       <div class="hero-actions">
         <a href="https://wa.link/giwkbo" target="_blank" rel="noopener noreferrer" class="hero-cta hero-cta-primary">Quiero mi diagnóstico gratis &rarr;</a>
         <a href="#sistemas" class="hero-cta">Ver ecosistemas en operación</a>
       </div>
+    </section>
+
+    <!-- EXPLICACIÓN + VIDEOS -->
+    <section class="fade-in-section" aria-label="Cómo lo hacemos">
+      <p class="hero-explainer">
+        Diseñamos sistemas con NFC, inteligencia artificial y software a medida que conectan cada punto de contacto de tu empresa, para que vendas más, automatices lo repetitivo y tus clientes vivan una experiencia memorable desde el primer toque.
+      </p>
+      <a href="https://instagram.com/manalf.oficial" target="_blank" rel="noopener noreferrer" class="video-showcase-card">
+        <div class="video-showcase-text">
+          <span class="video-showcase-title">Mira nuestros videos de usos reales</span>
+          <span class="video-showcase-cta">Ver en Instagram &rarr;</span>
+        </div>
+      </a>
     </section>
 
     <div class="section-divider"></div>
